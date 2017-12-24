@@ -1,0 +1,25 @@
+@import "../../../common/lib/weui.wxss";
+.publish-save{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 118rpx;
+}
+.publish-save button{
+    background: #ff3334;
+    height: 118rpx;
+    color: #fff;
+    border-radius: 0;
+    padding-top: 20rpx;
+    text-indent: 10rpx;
+}
+.image-close{
+    width: 25rpx;
+    height: 25rpx;
+    position: absolute;
+    margin-top: -27rpx;
+    margin-left: 132rpx;
+}
+textarea{
+    width: 100%;
+}

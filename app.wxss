@@ -1,0 +1,71 @@
+/**app.wxss**/
+page {
+  background-color: #fff;
+  height: 100%; 
+  color: #333;
+} 
+
+view{
+    margin:0;
+    padding: 0;
+}
+.hidden{
+    display: none;
+}
+/* lib */
+.bold{
+  font-weight: bold;
+}
+.text-center{
+  text-align: center;
+}
+.huge-font{
+    font-size: 48rpx;
+} 
+.big-font{
+    font-size: 36rpx;
+}
+.normal-font{
+    font-size: 28rpx;
+}
+.small-font{
+    font-size: 24rpx;
+}
+.smaller-font{
+    font-size: 20rpx;
+}
+.smallest-font{
+    font-size: 18rpx;
+}
+.blue-font{
+    color: #3366cc;
+}
+.light-gray{
+    color: #002e73;
+}
+.gray-font{
+    color: #999;
+}
+.no-margin{
+    margin: 0 !important;
+}
+.gray-bg{
+    background-color: #ddd;
+    width: 100%;
+}
+.left{
+    float: left;
+}
+.right{
+    float: right;
+}
+.heart-icon{
+    width: 48rpx !important;
+    height: 24rpx !important;
+}
+.clearfix{
+    clear: both;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}

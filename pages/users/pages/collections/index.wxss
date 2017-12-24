@@ -1,0 +1,48 @@
+/* pages/users/pages/mine/friends/index.wxss */
+page{
+    background: #ebebeb;
+}
+.collect-list{ 
+    background: #fff;
+    white-space:nowrap;
+    border-bottom: 1px solid #ddd;
+    border-radius: 5rpx;
+    height: 70rpx;
+    padding: 0 !important;
+}
+.collect-list view{  
+    height: 70rpx;
+    line-height: 70rpx;
+    width: 15%;
+    display: block;
+    text-align: center;
+    border-right: 1px solid #ddd;
+    font-size: 24rpx;
+    float: left;
+}
+.collect-item{
+    background-color: #fff;
+    height: 280rpx;
+    padding: 18rpx 20rpx 30rpx 30rpx;
+    border-bottom: 6rpx solid #ddd;
+}
+.item-image{
+    height: 280rpx;
+    width: 280rpx;
+    float: left;
+    margin-right: 108rpx;
+}
+.item-nickname{
+    font-size: 40rpx;
+    margin-top: 70rpx;
+    margin-bottom: 60rpx;
+}
+.selected-filter{
+    background:#ff3333;
+    color: #fff;
+} 
+.new-folder-img{
+    width: 50rpx;
+    height: 50rpx;
+    margin-top: 10rpx;
+}

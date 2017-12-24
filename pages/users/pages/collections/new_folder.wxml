@@ -1,0 +1,20 @@
+<view class="page-body">
+    <form bindsubmit="formSubmit">
+        <view class="page-section"> 
+            <input placeholder="文件夹名..." auto-focus name="folder_name" value='{{folder_name}}' />    
+        </view>
+
+        <view class='publish-save'>
+            <button formType="submit">立即创建</button>
+        </view> 
+    </form>
+</view>
+
+<view class='folder-list'>
+    <block wx:for-items="{{folders}}" wx:key="idx" wx:for-index="idx">
+        <view class='folder-item'>
+            <text class='left'>{{item.folder_name}}</text>
+            <text class='right small-font' bindtap='delete_folder' data-id='{{item.id}}'>删除</text>
+        </view>
+    </block>
+</view>

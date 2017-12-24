@@ -1,0 +1,96 @@
+/* pages/users/pages/mine/publishes/index.wxss */
+.publishes-cover{
+    width: 100%;
+    height: 385rpx;
+    border-bottom: 5rpx solid #3266cc;
+}
+.himself{
+    border-bottom-color: #ff3433 !important;
+}
+.publishes-name-avatar{
+    position: absolute;
+    width: 100%;
+    margin-top: -90rpx;
+}
+.publishes-like{
+    float:left;
+    padding-top: 100rpx;
+}
+.publishes-like view{
+    margin-top: -5rpx;
+}
+.publishes-nickname{
+    float: right;
+    height: 113rpx;
+    line-height: 113rpx;
+    color: #fff;
+    font-size: 30rpx;
+    margin-top: -15rpx;
+}
+.publishes-avatar{
+    height: 113rpx;
+    width: 113rpx;
+    border: 5rpx solid #fff;
+    float: right;
+    margin-right: 42rpx;
+    margin-left: 30rpx;
+}
+.heart-icon{
+    margin-left: 23rpx;
+    margin-right: 15rpx;
+}
+.publish-list{
+    margin-top:120rpx;
+}
+.publish-item{
+    padding: 20rpx 2.7% 0 2.7%;
+}
+.publish-time{
+    width: 17.8%;
+}
+.publish-content{
+    width: 76.5%;
+    
+}
+.publish-detail{
+    width: 100%;
+    padding: 31rpx 20rpx 8rpx 20rpx;
+    background: #eee;
+    margin-bottom: 40rpx;
+}
+.publish-images{
+    max-width: 160rpx;
+    margin-right: 15rpx;
+}
+.publish-image{
+    width: 80rpx;
+    height: 80rpx;
+    margin-top: -11rpx;
+    padding: 0;
+}
+.publish-info{
+    font-size: 30rpx;
+    width: 82%;
+    text-align: justify;
+    margin-top: -11rpx;
+}
+.publish-info-extra{
+    width: 67%;
+    word-wrap:break-word;
+}
+.publish-create{
+    width: 120rpx;
+    height: 120rpx;
+    background: #999;
+    text-align: center;
+    margin-bottom: 30rpx;
+}
+.publish-create image{
+    width: 80rpx;
+    height: 80rpx;
+    margin-top: 18rpx;
+}
+.heart-icon{
+    width: 30rpx !important;
+    height: 12rpx;
+}

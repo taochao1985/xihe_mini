@@ -1,0 +1,35 @@
+<view class="page-body">
+    <form bindsubmit="formSubmit">
+      <view class="page-section">
+        <view class="weui-cells">
+          <view class="weui-cell">
+            <view class="weui-cell__bd">
+              <view class="weui-uploader">
+                <view class="weui-uploader__hd">
+                     <textarea placeholder="来说点什么吧..." auto-focus name="description" />   
+                </view>
+                <view class="weui-uploader__bd">
+                  <view class="weui-uploader__files">
+                    <block wx:for="{{imageList}}" wx:for-item="image" wx:key="key">
+                      <view class="weui-uploader__file">
+
+                        <image src='../../../common/images/image_close.png' data-index='{{index}}' class='image-close' bindtap='removeImg'></image>
+                        <image class="weui-uploader__img" src="{{image}}" data-src="{{image}}" bindtap="previewImage"></image>
+                      </view>
+                    </block>
+                  </view>
+                  <view class="weui-uploader__input-box">
+                    <view class="weui-uploader__input" bindtap="chooseImage"></view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view class='publish-save'>
+            <button formType="submit">发送</button>
+        </view>
+      </view>
+    </form>
+  </view>

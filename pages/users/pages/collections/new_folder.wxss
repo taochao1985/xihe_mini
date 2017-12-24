@@ -1,0 +1,20 @@
+.page-body{
+    padding-top: 10%;
+}
+input{
+    margin-bottom: 40rpx;
+    padding-left: 20rpx;
+}
+button{
+    background: #ff3334;
+    color: #fff;
+}
+.folder-list{
+    margin-top: 40px;
+}
+.folder-item{
+    height: 80rpx;
+    line-height: 80rpx;
+    border-bottom: 1rpx solid #ddd;
+    padding: 0 20rpx;
+}

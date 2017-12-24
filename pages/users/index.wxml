@@ -1,0 +1,21 @@
+<view class="index">
+    <view class='user-index-thumb-name'>
+        <image src='{{userInfo.avatarUrl}}' mode='aspectFill'></image>
+        <view class='user-index-nickname bold'>{{userInfo.nickName}}</view>
+        <view class='user-index-followed normal-font gray-font'>已被关注{{followTime}}次</view>
+    </view>     
+  <view class="index-bd">
+    <view class="kind-list">
+        <block wx:for-items="{{list}}" wx:key="{{item.id}}" wx:for-index="idx">
+            <navigator url="pages/{{item.url}}?uid={{uid}}" class="navigator" >
+                <view class="kind-list-item user-navi{{index}}">
+                    <view id="{{item.id}}" class="kind-list-item-hd">
+                        <image src='{{item.img_path}}' class='user-index-icon'></image>
+                        <view class="kind-list-text">{{item.name}}</view>
+                    </view>
+                </view>
+            </navigator>
+        </block>
+    </view>
+  </view>
+</view>

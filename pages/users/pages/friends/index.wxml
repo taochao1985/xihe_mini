@@ -1,0 +1,27 @@
+<view class='friend-main-top'>
+    <image src='{{userInfo.avatarUrl}}' class='friends-top' mode='aspectFill'></image>
+    <image src='{{userInfo.avatarUrl}}' class='friends-top-icon' mode='aspectFill'></image>
+</view>
+<view class='friends-list'>
+    <block wx:for-items="{{follows}}" wx:key="idx" wx:for-index="idx" wx:for-item="item">
+        
+        <view class='friend-item'>
+            <navigator url="/pages/users/pages/publishes/index?uid={{item.uid}}">
+                <view class='item-image'>
+                    <image src='{{item.avatarurl}}' mode='aspectFill'></image>
+                    <image src='../../../common/images/item_circle.png' class='friend-new-info hidden'></image>
+                </view>
+                <view class='item-nickname bold big-font'>{{item.nickname}}</view>
+            </navigator>
+            <view class='item-info gray-font small-font' bindtap='unfollow' data-follow='1' data-uid='{{item.uid}}'>取消关注</view>
+            </view>
+    </block>
+    <view class='friend-item hidden'>
+        <view class='item-image'>
+            <image src='{{userInfo.avatarUrl}}' mode='aspectFill'></image>
+            <image src='../../../common/images/item_circle.png' class='friend-new-info'></image>
+        </view>
+        <view class='item-nickname bold big-font'>legend</view>
+        <view class='item-info gray-font small-font'>最新发布</view>
+    </view>
+</view>

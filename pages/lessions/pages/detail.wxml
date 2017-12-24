@@ -1,0 +1,24 @@
+<view class='detail-title-top'></view>
+<view class='detail-title-time'>
+    <view class='detail-title big-font bold'>
+        {{lessionData.title}}
+    </view>
+    <view class='detail-author-time small-font'>
+         
+        <text class='lession-time'>
+            {{lessionData.created}}
+        </text>
+    </view>
+</view>
+<view class="section-video section tc" wx:if="{{lessionData.video_name}}">
+  <video src="{{webUrl}}{{lessionData.video_path}}" class='lession-video' controls ></video>
+</view>
+
+<view wx:if="{{lessionData.audio_name}}" class='section-video'>
+    <audio poster="" name="{{lessionData.audio_name}}" author="" class='lession-audio' src="{{webUrl}}{{lessionData.audio_path}}" controls loop></audio>
+</view>
+ 
+<import src="../../common/lib/wxParse/wxParse.wxml"/>
+<view class="wxParse">
+    <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
+</view>

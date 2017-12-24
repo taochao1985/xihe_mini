@@ -1,0 +1,35 @@
+<scroll-view wx:if='{{lessionTypes.length > 3}}' class="scroll-view_H collect-list lession-type" scroll-x style="width: 100%">
+    <block wx:for="{{lessionTypes}}" wx:key="unique">
+        <view wx:if="{{item.id == selectedType }}" class='bold selected-type' bindtap='changeType' data-id='{{item.id}}'>{{item.name}}</view>
+        <view wx:else class='bold' data-id='{{item.id}}' bindtap='changeType'>{{item.name}}</view>
+    </block>
+</scroll-view>
+
+<view wx:else class="lession-type lession-type-limited">
+    <block wx:for="{{lessionTypes}}" wx:key="unique">
+        <view wx:if="{{item.id == selectedType }}" class='bold selected-type' bindtap='changeType' data-id='{{item.id}}'>{{item.name}}</view>
+        <view wx:else class='bold' data-id='{{item.id}}' bindtap='changeType'>{{item.name}}</view>
+    </block>
+</view>
+
+
+<view class='lession-list'>
+    <block wx:for="{{lessions}}" wx:key="unique">
+        <navigator url='/pages/lessions/pages/detail?id={{item.id}}'>
+        <view class='lession-item'>
+            <image mode='aspectFill' src='{{item.image_path}}' lazy-load='true' class='lession-img'></image>
+            <view class='lession-info'>
+                <view class='bold lession-gray lession-normal'> </view>
+                <view class='author-time'>
+                    <text class='lession-author big-font'>
+                        {{item.title}}
+                    </text>
+                    <text class='lession-time smallest-font'>
+                        {{item.created}}
+                    </text>
+                </view>
+            </view>
+        </view> 
+        </navigator>   
+    </block>
+</view>

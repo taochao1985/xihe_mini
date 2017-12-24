@@ -1,0 +1,47 @@
+{
+  "pages":[
+    "pages/index/index", 
+    "pages/users/pages/collections/index",
+    "pages/users/pages/collections/new_folder",
+    "pages/users/pages/publishes/index",
+    "pages/users/pages/friends/index",
+    "pages/users/index",
+    "pages/lessions/pages/index",
+    "pages/lessions/pages/detail",
+    "pages/users/pages/publishes/create"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle":"black"
+  },
+  "tabBar": {
+        "list": [
+            {
+                "pagePath": "pages/index/index",
+                "iconPath": "./pages/common/images/home_normal.png",
+                "selectedIconPath":"./pages/common/images/home_highlight.png",
+                "text":"首页"
+            },
+            {
+                "pagePath": "pages/lessions/pages/index",
+                "iconPath": "./pages/common/images/lession_normal.png",
+                "selectedIconPath": "./pages/common/images/lession_highlight.png",
+                "text": "课程"
+            },
+            {
+                "pagePath": "pages/users/pages/publishes/create",
+                "iconPath": "./pages/common/images/publish_normal.png",
+                "selectedIconPath": "./pages/common/images/publish_highlight.png",
+                "text": "发布"
+            },
+            {
+                "pagePath": "pages/users/index",
+                "iconPath": "./pages/common/images/profile_normal.png",
+                "selectedIconPath": "./pages/common/images/profile_highlight.png",
+                "text": "我的"
+            }
+        ]
+    }
+}

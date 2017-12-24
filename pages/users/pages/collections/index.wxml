@@ -1,0 +1,21 @@
+ 
+<scroll-view class="scroll-view_H collect-list" scroll-x style="width: 100%">
+    <view bindtap='new_folder' class='new-folder-view'>
+        <image src='../../../common/images/plus.png' class='new-folder-img'></image>
+    </view>
+    <view wx:if='{{selected_folder == 0}}' bindtap='filter_collections' data-id='0' class='selected-filter'>全部</view>
+    <view wx:else bindtap='filter_collections' data-id='0' >全部</view>
+    <block wx:for-items="{{folders}}" wx:key="idx" wx:for-index="idx">
+        <view wx:if='{{selected_folder == item.id}}' class='selected-filter' bindtap='filter_collections' data-id='{{item.id}}'>{{item.folder_name}}</view>
+        <view wx:else bindtap='filter_collections' data-id='{{item.id}}'>{{item.folder_name}}</view>
+    </block>
+</scroll-view>
+<block wx:for-items="{{collections}}" wx:key="idx" wx:for-index="idx" wx:for-item="item">
+    <view class='collect-item'>
+        <image src='{{item.image_path}}' mode='aspectFill'  class='item-image'></image>
+        <view class='item-info'>
+            <view class='item-nickname bold big-font'>{{item.nickname}}</view>
+            <view class='item-info gray-font normal-font'>{{item.created}}</view>
+        </view>
+    </view>    
+</block>   

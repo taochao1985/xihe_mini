@@ -1,0 +1,217 @@
+<!--index.wxml-->
+<swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" indicator-active-color="{{activecolor}}">
+    <block wx:for="{{imgUrls}}" wx:key="unique">
+        <navigator url="{{item.relate_url}}">
+            <swiper-item>
+                <image src="{{base_url}}{{item.image_path}}" class="slide-image" />
+            </swiper-item>
+        </navigator>
+    </block>
+</swiper>
+
+<!-- lession types--> 
+<scroll-view class="scroll-view_H collect-list lessions-type" scroll-x style="width: 100%">
+    <block wx:for-items="{{lessionTypes}}" wx:key="index" wx:for-index="idx">
+        <view bindtap='visitLession' data-id='{{item.id}}'>
+            <text>{{item.name}}</text>
+        </view>
+    </block>
+</scroll-view> 
+<!-- collected most -->
+<view class="collected-most">
+    <view class="extra-title normal-font bold">
+        会员收藏最多
+    </view> 
+        <scroll-view class="scroll-view_H collect-list" scroll-x style="width: 100%">
+        <block wx:for-items="{{collects}}" wx:key="{{item.id}}" wx:for-index="idx">
+            <view class='collect-item'>
+                <image mode='aspectFill' class="item-image" src='{{item.image_path}}' data-images='{{totalImageUrls}}' data-src='{{image.image_path}}' bindtap='previewImage'></image>
+                <view class='item-info'>
+                    <image wx:if='{{item.is_collect == 1}}' 
+                        src='../common/images/star_highlight.png' 
+                        class='collect-icon' 
+                        data-uid='{{item.uid}}' 
+                        data-ind='{{idx}}' 
+                        data-aid='{{item.image_id}}'
+                        data-collect='{{item.is_collect}}' 
+                        bindtap='userCollect' 
+                        data-type='collect'></image>
+                    <image wx:else 
+                        src='../common/images/star_normal.png' 
+                        class='collect-icon'
+                        data-uid='{{item.uid}}' 
+                        data-ind='{{idx}}' 
+                        data-aid='{{item.image_id}}'
+                        data-collect='{{item.is_collect}}' 
+                        bindtap='userCollect' 
+                        data-type='collect'></image>
+                    <text class='small-font collect-count'>{{item.count}}</text>
+                </view>
+            </view>
+        </block>
+       </scroll-view> 
+</view>
+
+<!-- followed friends -->
+<view class="followed-friends">
+    <view class="extra-title normal-font bold">
+        关注的好友
+    </view>
+    <scroll-view class="scroll-view_H collect-list" scroll-x style="width: 100%">
+        <block wx:for-items="{{follows}}" wx:key="{{item.id}}" wx:for-index="idx">
+            <navigator class='collect-item' url='/pages/users/pages/publishes/index?uid={{item.target_uid}}'>
+                <image mode='aspectFill' class="item-image" src='{{item.avatarurl}}'></image>
+                <view class='item-info'>
+                    <text class='small-font collect-count'>{{item.count}}</text>
+                </view>
+            </navigator>
+        </block>
+    </scroll-view>
+</view>
+
+<!--recent publishes-->
+<view class='recent-publishes'>
+    <view class='normal-font bold publishes-title'>最新发布</view>
+    <view class='publish-list'>
+        <block wx:for-items="{{publishes}}" wx:key="{{item.id}}" wx:for-index="idx">
+            <view class='publish-item'>
+                <navigator class='publish-avatar' url='/pages/users/pages/publishes/index?uid={{item.uid}}' >
+                    <image src='{{item.avatarurl}}' mode='aspectFill'></image>
+                </navigator>
+                <view class='publish-content'>
+                    <!-- <view>
+                        <view class='normal-font bold blue-font'>{{item.nickname}}</view>
+                        <view class='publish-like' wx:if='{{uid != item.uid}}'>
+                            
+                            <image wx:if='{{item.is_follow==1}}' src='../common/images/star_highlight.png'  class='heart-icon' data-follow='{{item.is_follow}}' bindtap='userFollow' data-uid='{{item.uid}}'></image>
+                            <image wx:else src='../common/images/star_normal.png' class='heart-icon' data-index='{{idx}}' data-follow='{{item.is_follow}}' bindtap='userFollow' data-uid='{{item.uid}}'></image>
+                        </view>
+                    </view> -->
+
+                     <view>
+                        <text class='normal-font bold blue-font left'>{{item.nickname}}</text>
+
+                        <text class='publish-like right normal-font' wx:if='{{uid != item.uid}}' data-index='{{idx}}' data-follow='{{item.is_follow}}' bindtap='userFollow' data-uid='{{item.uid}}'>
+                            <text wx:if='{{item.is_follow==1}}'>取消关注</text>
+                            <text wx:else >关注</text>
+                        </text>
+                        <view class='clearfix'></view>
+                    </view> 
+                    
+                    <view class='publish-desc'>
+                        <view class='normal-font publish_text height-limit publish-text'>
+                            {{item.description}}
+                        </view>
+                        <text class='normal-font light-gray hidden'>全文</text>
+                        <view class='publish-one-image' wx:if='{{item.image_path.length == 1 }}'>
+                            <block wx:for-items="{{item.image_path_collect}}" wx:for-item="image" wx:key="index" wx:for-index="ind">
+                                <view>
+                                    <image wx:if='{{(uid != item.uid) && (image.is_collect==1)}}' 
+                                            data-uid='{{item.uid}}' 
+                                            data-post-id='{{idx}}' 
+                                            data-ind='{{ind}}' 
+                                            src='../common/images/star_highlight.png' 
+                                            class='heart-icon publish-collect' 
+                                            data-collect='{{image.is_collect}}' 
+                                            bindtap='userCollect' 
+                                            data-aid='{{image.aid}}' >
+                                    </image>
+                                    <image wx:elif='{{(uid != item.uid) && (image.is_collect==0)}}' 
+                                            data-uid='{{item.uid}}' 
+                                            src='../common/images/star_normal.png' 
+                                            data-ind='{{ind}}' 
+                                            class='heart-icon publish-collect' 
+                                            data-index='{{idx}}' 
+                                            data-collect='{{image.is_collect}}' 
+                                            bindtap='userCollect' 
+                                            data-post-id='{{idx}}' 
+                                            data-aid='{{image.aid}}'>
+                                    </image>
+
+                                    <image mode='aspectFill' data-images='{{item.image_urls}}' data-src='{{image.url}}' src='{{image.url}}' bindtap='previewImage' lazy-load='true'></image>
+                                    
+                                </view>
+                            </block>
+                        </view>
+                        <view class='publish-two-image' wx:if='{{item.image_path.length == 2 }}'>
+                            <block wx:for-items="{{item.image_path_collect}}" wx:for-item="image" wx:key="index" wx:for-index="ind">
+                                <view>
+                                     <image wx:if='{{(uid != item.uid) && (image.is_collect==1)}}' 
+                                            data-uid='{{item.uid}}' 
+                                            data-post-id='{{idx}}' 
+                                            data-ind='{{ind}}' 
+                                            src='../common/images/star_highlight.png' 
+                                            class='heart-icon publish-collect' 
+                                            data-collect='{{image.is_collect}}' 
+                                            bindtap='userCollect' 
+                                            data-aid='{{image.aid}}' >
+                                    </image>
+                                    <image wx:elif='{{(uid != item.uid) && (image.is_collect==0)}}' 
+                                            data-uid='{{item.uid}}' 
+                                            src='../common/images/star_normal.png' 
+                                            data-ind='{{ind}}' 
+                                            class='heart-icon publish-collect' 
+                                            data-index='{{idx}}' 
+                                            data-collect='{{image.is_collect}}' 
+                                            bindtap='userCollect' 
+                                            data-post-id='{{idx}}' 
+                                            data-aid='{{image.aid}}'>
+                                    </image>
+
+                                    <image wx:if='{{(index+1)%2 == 0}}' data-images='{{item.image_urls}}' data-src='{{image.url}}' bindtap='previewImage' mode='aspectFill' class='no-margin' src='{{image.url}}' lazy-load='true'></image>
+                                    <image wx:else mode='aspectFill' data-images='{{item.image_urls}}' data-src='{{image.url}}' bindtap='previewImage' src='{{image.url}}' lazy-load='true'></image>
+                                </view>
+                            </block>
+                            <view class='clearfix'></view>
+                        </view>
+                        <view class='publish-three-image' wx:if='{{item.image_path.length > 2 }}'>
+                            <block wx:for-items="{{item.image_path_collect}}" wx:for-item="image" wx:key="index" wx:for-index="ind">
+                                <view>
+                                    <image wx:if='{{(uid != item.uid) && (image.is_collect==1)}}' 
+                                            data-uid='{{item.uid}}' 
+                                            data-post-id='{{idx}}' 
+                                            data-ind='{{ind}}' 
+                                            src='../common/images/star_highlight.png' 
+                                            class='heart-icon publish-collect' 
+                                            data-collect='{{image.is_collect}}' 
+                                            bindtap='userCollect' 
+                                            data-aid='{{image.aid}}' >
+                                    </image>
+                                    <image wx:elif='{{(uid != item.uid) && (image.is_collect==0)}}' 
+                                            data-uid='{{item.uid}}' 
+                                            src='../common/images/star_normal.png' 
+                                            data-ind='{{ind}}' 
+                                            class='heart-icon publish-collect' 
+                                            data-index='{{idx}}' 
+                                            data-collect='{{image.is_collect}}' 
+                                            bindtap='userCollect' 
+                                            data-post-id='{{idx}}' 
+                                            data-aid='{{image.aid}}'>
+                                    </image>
+
+                                    <image wx:if='{{(index+1)%3 == 0}}' data-images='{{item.image_urls}}' data-src='{{image.url}}' bindtap='previewImage' mode='aspectFill' class='no-margin' src='{{image.url}}' lazy-load='true'></image>
+                                    <image wx:else mode='aspectFill' data-src='{{image.url}}' data-images='{{item.image_urls}}' bindtap='previewImage' src='{{image.url}}' lazy-load='true'></image>
+                                </view>
+                            </block>
+                            <view class='clearfix'></view>
+                        </view>
+                        
+                        <view class='publish-comments-input' wx:if='{{uid != item.uid}}'>
+                            <input placeholder="想说什么请留言吧..." placeholder-class='gray-font' class='small-font' data-index='{{idx}}' data-post-id='{{item.post_id}}' confirm-type='send' type='text' bindconfirm='saveComment' value='{{inputTxt}}'/>
+                        </view>
+                        <view class='publish-time'>
+                            <text class='smaller-font gray-font'>{{item.time_info}}</text>
+                        </view>
+                        <view class='publish-comments-content' wx:if="{{item.comments.length > 0}}">
+                            <block wx:for-items="{{item.comments}}" wx:for-item="comment" wx:key="index">
+                                <view class='normal-font'>
+                                    <text class='blue-font '>{{comment.nickname}}：</text>{{comment.content}}
+                                </view>
+                            </block>    
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </block>
+    </view>
+</view>

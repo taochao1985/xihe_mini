@@ -1,0 +1,70 @@
+<view class='publishes-index-header'>
+
+    <image wx:if='{{targetUid == currentUid}}' src='{{coverImage}}' mode='aspectFill' class='publishes-cover himself' bindtap="changeCover"></image>
+
+    <image wx:else src='{{coverImage}}' mode='aspectFill' class='publishes-cover'></image>
+    <view class='publishes-name-avatar'>
+        <view class='publishes-like'>
+            <image src='../../../common/images/heart_normal.png' class='heart-icon left'></image>
+            <view class='gray-font small-font left'>{{followCount}}</view>
+        </view>
+        <image src='{{userInfo.avatarUrl}}' mode='aspectFill' class='publishes-avatar'></image>
+        <view class='publishes-nickname'>{{userInfo.nickName}}</view>
+    </view>
+</view> 
+
+<view class='publish-list' wx:if='{{pubList}}' >
+    <view class='publish-item' wx:if='{{(firstDay != today)&&(targetUid == currentUid)}}'>
+        <view class='publish-time left'>
+            <text class='huge-font bold'>今天</text>
+        </view>
+        <view class='publish-content left'> 
+            <view class='publish-create' bindtap='chooseImage'> 
+                <image src='../../../common/images/camera.png' mode='aspectFill' class='publish-image'></image> 
+            </view>
+        </view>
+    </view>
+    <block wx:for-items="{{pubList}}" wx:key="idx" wx:for-index="idx" wx:for-item="publish">
+        <view class='publish-item'>
+            <view class='publish-time left' wx:if="{{idx == today }}">
+                <text class='huge-font bold'>今天</text>
+            </view>
+            <view class='publish-time left' wx:else>
+                <text class='huge-font bold'>{{publish.date_day}}</text>
+                <text class='small-font bold'>{{publish.date_month}}</text>
+            </view>
+            <view class='publish-content left'>
+                <view class='publish-create' bindtap='chooseImage' wx:if="{{(idx == today) && (targetUid == currentUid) }}"> 
+                    <image src='../../../common/images/camera.png' mode='aspectFill' class='publish-image'></image> 
+                </view>
+                
+                <block wx:for-items="{{publish.data}}" wx:for-item="item" wx:key="idex">
+                    <view class='publish-detail'>
+                        <view class='publish-images left'>
+                            <block wx:if='{{item.image_path.length > 0 }}' wx:for-items="{{item.image_path}}" wx:for-item="image" wx:key="index" >
+                                <image data-images='{{item.image_url}}' data-src='{{image}}' src='{{image}}' mode='aspectFill' class='publish-image' bindtap='previewImage'></image>
+                            </block>
+                        </view>
+                        <view class='left publish-info publish-info-extra' wx:if='{{item.image_path.length > 1 }}'>{{item.description}}</view>
+                        <view class='left publish-info' wx:else>{{item.description}}</view>
+                        <view class='clearfix'></view>
+                    </view>
+                </block>
+            </view>
+            <view class='clearfix'></view>
+        </view>
+    </block>   
+</view>
+
+<view class='publish-list' wx:else>
+    <view class='publish-item'>
+        <view class='publish-time left'>
+            <text class='huge-font bold'>今天</text>
+        </view>
+        <view class='publish-content left'> 
+            <view class='publish-create' bindtap='chooseImage'> 
+                <image src='../../../common/images/camera.png' mode='aspectFill' class='publish-image'></image> 
+            </view>
+        </view>
+    </view>        
+</view>
