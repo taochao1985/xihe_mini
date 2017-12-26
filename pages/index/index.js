@@ -1,5 +1,6 @@
 //index.js 
 var xihe = require('../../utils/request.js'); 
+var app  = getApp();
 Page({
     data: {
         activecolor: '#ff3334',
@@ -21,9 +22,9 @@ Page({
         totalImageUrls : "",
         collect_folders:[]
     },
-    onLoad: function () { 
+    onLoad: function () {  
         this.setData({
-            uid: wx.getStorageSync("uid")
+            uid: app.globalData.uid
         });
 
         xihe._set_index_data = function(item, data){
@@ -78,9 +79,9 @@ Page({
             });
         };
 
-        xihe._save_collect_complete = function (item, data, index){
+        xihe._save_collect_complete = function (item, data){
             item.setData({
-                collects: data.data
+                collects: data.data.collections
             });
         };
 
@@ -115,7 +116,7 @@ Page({
                 callback: function (data) {
                     if (data.code == 0) {
                         if (that.data.target_data.act_type == 'collect' ){
-                            xihe._save_collect_complete(that, data, index);
+                            xihe._save_collect_complete(that, data);
                         }else{
                             xihe._save_usercollect_complete(that, data, that.data.target_data.post_id, that.data.target_data.index);
                         }
@@ -235,7 +236,11 @@ Page({
                 },
                 callback: function (data) {
                     if (data.code == 0) {
-                        xihe._exec_actionsheet(data.data, that);
+                        if (data.data.length > 0 ){
+                            xihe._exec_actionsheet(data.data, that);
+                        }else{
+                            xihe._save_user_collect(-1, that);
+                        }
                     }
                 }
             });

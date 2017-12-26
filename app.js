@@ -18,7 +18,7 @@ App({
             var app               = getApp();
             app.globalData.openid = data.openid;
             app.globalData.uid    = data.uid;
-            xihe._getSetting(app);
+            xihe._getSetting();
         }; 
 
         xihe._login = function(){ 
@@ -39,23 +39,15 @@ App({
                 }
             })
         }; 
-
-        xihe._setUserInfo = function(app,data){
-            
-            app.globalData.userinfo = JSON.parse(data.data.userinfo);
-        };
-
-        xihe._getUserInfo = function(app){
-            if ( !app ){
-                app = getApp();
-            }
+ 
+        xihe._getUserInfo = function(){
+            var App = getApp();
             wx.getUserInfo({
                 success: res => {
-                    // 可以将 res 发送给后台解码出 unionId 
-                    console.log(app);
-                    if (app.globalData.openid){ 
+                    // 可以将 res 发送给后台解码出 unionId  
+                    if (App.globalData.openid){ 
                         var submitData = {
-                            openid        : app.globalData.openid,
+                            openid: App.globalData.openid,
                             userinfo      : res.rawData,
                             encrypteddata : res.encryptedData
                         };
@@ -63,7 +55,7 @@ App({
                             url: "/api/wechat/update_userinfo",
                             data: submitData,
                             callback: function (data) {  
-                                wx._setUserInfo(app, data); 
+                                App.globalData.userinfo = JSON.parse(data.data.userinfo);
                             }
                         });
                     }else{
@@ -80,22 +72,16 @@ App({
             })
         };
         
-        xihe._getSetting = function(app){ 
+        xihe._getSetting = function(){ 
             // 获取用户信息
             wx.getSetting({
                 success: res => {  
-                    if (!res.authSetting['scope.userInfo']) { 
-                        console.log('A');
-                        xihe._getUserInfo(app); 
+                    if (!res.authSetting['scope.userInfo']) {  
+                        xihe._getUserInfo(); 
                         
-                    }else{
-                         
-                    }
-
-                    if (res.authSetting['scope.userInfo']) {  
-                        // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-                        console.log('B');
-                        xihe._getUserInfo(app);
+                    }else {
+                        // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框 
+                        xihe._getUserInfo();
                        
                     }
                 },
@@ -110,7 +96,7 @@ App({
                 if ( !this.globalData.openid ){ 
                     xihe._login();
                 } else if ( !this.globalData.userinfo ){
-                    xihe._getSetting(this);
+                    xihe._getSetting();
                 }
             },
             fail: function (data) { 

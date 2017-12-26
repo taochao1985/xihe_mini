@@ -1,4 +1,5 @@
 var xihe = require('../../../../utils/request.js');
+var app  = getApp();
 Page({
     data: {
         uid: 0,
@@ -7,7 +8,7 @@ Page({
     },
     onLoad: function (options) {
         this.setData({
-            uid: wx.getStorageSync("uid")
+            uid : app.globalData.uid
         });
 
         xihe._set_folders = function(data,item){

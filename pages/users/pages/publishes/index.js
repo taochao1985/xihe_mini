@@ -1,5 +1,6 @@
 // pages/users/pages/mine/friends/index.js
 var xihe = require('../../../../utils/request.js');
+var app  = getApp();
 Page({
 
     /**
@@ -72,8 +73,10 @@ Page({
 
         xihe._set_userinfo_data = function (item, data) {
             var userinfo = JSON.parse(data.data.userinfo);
+            if ( !data.cover ){
+                data.cover = userinfo.avatar;
+            }
             var setData = {
-                userInfo   : userinfo,
                 coverImage : data.cover,
                 followCount: data.follow_count
             }
@@ -136,8 +139,9 @@ Page({
         };
 
         this.setData({
-            targetUid: wx.getStorageSync("uid"),
-            currentUid: wx.getStorageSync("uid")
+            targetUid  : app.globalData.uid,
+            currentUid : app.globalData.uid,
+            userInfo   : app.globalData.userinfo
         });
         var option_uid = options.uid; 
         if (option_uid > 0) {

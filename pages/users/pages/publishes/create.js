@@ -1,4 +1,5 @@
 var xihe = require('../../../../utils/request.js');
+var app  = getApp();
 Page({
     data: {
         imageList: [],
@@ -18,7 +19,7 @@ Page({
             wx.setStorageSync("img_urls", "");
         }
         this.setData({
-            uid: wx.getStorageSync("uid")
+            uid: app.globalData.uid
         });
         xihe._upload_complete = function (res, that){
             res = JSON.parse(res);
@@ -99,7 +100,6 @@ Page({
                         imageList: that.data.imageList
                     })
                 } 
-                
             }
         })
     },
@@ -118,8 +118,5 @@ Page({
             form_item : e,
             callback : xihe._save_form
         });
-        // this.setData({
-        //     description : e.detail.description.value
-        // })
     }
 })

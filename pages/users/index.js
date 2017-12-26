@@ -1,4 +1,5 @@
 var xihe = require('../../utils/request.js');
+var app  = getApp();
 Page({
     data: {
         uid : 0,
@@ -26,8 +27,8 @@ Page({
     },
     onLoad: function (options) {
         this.setData({
-            userInfo: wx.getStorageSync("userinfo"),
-            uid: wx.getStorageSync("uid")
+            userInfo : app.globalData.userinfo,
+            uid      : app.globalData.uid
         });
 
         xihe._set_follow_count = function(item, count){

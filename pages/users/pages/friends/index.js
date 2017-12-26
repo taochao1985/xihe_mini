@@ -1,5 +1,6 @@
 // pages/users/pages/mine/friends/index.js
 var xihe = require('../../../../utils/request.js');
+var app  = getApp();
 Page({
 
   /**
@@ -16,8 +17,8 @@ Page({
    */
   onLoad: function (options) {
       this.setData({
-          userInfo : wx.getStorageSync("userinfo"),
-          uid      : wx.getStorageSync("uid") 
+          userInfo : app.globalData.userinfo,
+          uid      : app.globalData.uid 
       });
 
       xihe._set_user_follows = function (item, users){
