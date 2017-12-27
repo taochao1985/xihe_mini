@@ -12,7 +12,6 @@ Page({
         duration: 1000,
         lessionTypes:[],
         publishes : [],
-        uid:0,
         collects : [],
         follows: [],
         currentPage : 0,
@@ -22,35 +21,42 @@ Page({
         totalImageUrls : "",
         collect_folders:[]
     },
-    onLoad: function () {  
-        this.setData({
-            uid: app.globalData.uid
-        });
-
-        xihe._set_index_data = function(item, data){
+    onShow: function () { 
+        var item = this;
+        xihe._set_index_data = function (item, data) {
             item.setData({
-                imgUrls      : data.slider_images,
+                imgUrls: data.slider_images,
                 totalImageUrls: data.slider_images_url,
-                lessionTypes : data.lession_type,
-                publishes    : data.publishes ,
-                collects     : data.collects,
-                follows      : data.follows,
-                currentPage  : 1,
-                totalPages   : data.total_pages
+                lessionTypes: data.lession_type,
+                publishes: data.publishes,
+                collects: data.collects,
+                follows: data.follows,
+                currentPage: 1,
+                totalPages: data.total_pages
             })
         };
-        xihe._get_index_data = function(item){
+        xihe._get_index_data = function () {
             xihe.get({
                 url: "/api/main/index",
-                data: {uid: item.data.uid},
-                callback: function(data){
+                data: { uid: app.globalData.uid },
+                callback: function (data) {
                     xihe._set_index_data(item, data);
                 }
             });
-        };
+        }; 
+        if (app.globalData.uid == 0 ){
+            // 登录
+            xihe._get_openid_callback = function (data) { 
+                app.globalData.openid = data.openid;
+                app.globalData.uid = data.uid;   
+                xihe._get_index_data();
+            };
 
-        xihe._get_index_data(this);
+        }else{ 
+            xihe._get_index_data();
+        }
 
+         
         xihe._save_comment_complete = function(item, data, post_id){
             item.data.publishes[post_id].comments = data.data;
             item.setData({
@@ -97,7 +103,7 @@ Page({
             xihe.get({
                 url: "/api/main/get_more_publish",
                 data: {
-                    uid  : that.data.uid,
+                    uid  : app.globalData.uid,
                     page : page
                 },
                 callback: function (data) {
@@ -157,7 +163,7 @@ Page({
         xihe.post({
             url: "/api/publish/store_comment",
             data: { 
-                    uid: this.data.uid,
+                    uid: app.globalData.uid,
                     post_id : post_id,
                     content : comment_content
                 },
@@ -193,7 +199,7 @@ Page({
         xihe.post({
             url: "/api/user/follow",
             data: {
-                user_id: this.data.uid,
+                user_id: app.globalData.uid,
                 target_uid: target_uid,
                 follow : follow
             },
@@ -216,7 +222,7 @@ Page({
         var that = this;
         this.setData({
             target_data: {
-                user_id: this.data.uid,
+                user_id: app.globalData.uid,
                 target_aid: target_aid,
                 collect: collect,
                 target_uid: target_uid,
@@ -232,7 +238,7 @@ Page({
             xihe.get({
                 url: "/api/user/folders_index",
                 data: {
-                    uid: this.data.uid
+                    uid: app.globalData.uid
                 },
                 callback: function (data) {
                     if (data.code == 0) {

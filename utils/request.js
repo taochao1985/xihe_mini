@@ -1,6 +1,8 @@
 var config = require('config.js');
 
 function get(opt) {
+    console.log(config.url + opt.url);
+    console.log(opt.data);
     wx.request({
         url: config.url + opt.url,
         data: opt.data,
@@ -20,6 +22,7 @@ function post(opt) {
         }
         return str.join("&");
     }
+    console.log(config.url + opt.url);
     wx.request({
         url: config.url + opt.url,
         data: json2Form(opt.data),

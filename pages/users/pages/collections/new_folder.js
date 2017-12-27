@@ -2,15 +2,10 @@ var xihe = require('../../../../utils/request.js');
 var app  = getApp();
 Page({
     data: {
-        uid: 0,
         folders : [],
         folder_name : ""
     },
     onLoad: function (options) {
-        this.setData({
-            uid : app.globalData.uid
-        });
-
         xihe._set_folders = function(data,item){
             var pages = getCurrentPages();
             if (pages.length > 1) {
@@ -28,7 +23,7 @@ Page({
             xihe.get({
                 url: "/api/user/folders",
                 data: {
-                    uid: item.data.uid
+                    uid: app.globalData.uid
                 },
                 callback: function (data) {
                     xihe._set_folders(data.data, item);
@@ -45,7 +40,7 @@ Page({
             xihe.post({
                 url: "/api/user/create_folder",
                 data: {
-                    uid : that.data.uid,
+                    uid: app.globalData.uid,
                     folder_name : folder_name 
                 },
                 callback: function (data) {
@@ -64,7 +59,7 @@ Page({
         xihe.post({
             url: "/api/user/delete_folder",
             data: {
-                uid: that.data.uid,
+                uid: app.globalData.uid,
                 folder_id: folder_id
             },
             callback: function (data) {

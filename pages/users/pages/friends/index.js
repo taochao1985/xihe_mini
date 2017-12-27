@@ -8,7 +8,6 @@ Page({
    */
   data: {
       userInfo : {},
-      uid      : 0,
       follows  : []
   },
 
@@ -17,8 +16,7 @@ Page({
    */
   onLoad: function (options) {
       this.setData({
-          userInfo : app.globalData.userinfo,
-          uid      : app.globalData.uid 
+          userInfo : app.globalData.userinfo
       });
 
       xihe._set_user_follows = function (item, users){
@@ -30,7 +28,7 @@ Page({
         xihe._get_user_follows = function(item){
             xihe.get({
                 url: "/api/user/follows",
-                data: { uid: item.data.uid },
+                data: { uid: app.globalData.uid },
                 callback: function (data) {
                     if (data.code == 0 ){
                         xihe._set_user_follows(item, data.users);
@@ -97,7 +95,7 @@ Page({
       xihe.post({
           url: "/api/user/follow",
           data: {
-              user_id: this.data.uid,
+              user_id: app.globalData.uid,
               target_uid: target_uid,
               follow: follow
           },

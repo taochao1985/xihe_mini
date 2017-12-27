@@ -27,8 +27,7 @@ Page({
     },
     onLoad: function (options) {
         this.setData({
-            userInfo : app.globalData.userinfo,
-            uid      : app.globalData.uid
+            userInfo : app.globalData.userinfo
         });
 
         xihe._set_follow_count = function(item, count){
@@ -57,7 +56,7 @@ Page({
         })
     },
     visitPublish: function (e) {
-        wx.setStorageSync("publish_uid", this.data.uid);
+        wx.setStorageSync("publish_uid", app.globalData.uid);
         wx.switchTab({
             url: '/pages/users/pages/publishes/index',
         })

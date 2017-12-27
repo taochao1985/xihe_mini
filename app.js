@@ -14,16 +14,16 @@ App({
         }
 
         // 登录
-        xihe._get_openid_callback =function(data){  
+        xihe._get_openid_callback =function(data){   
             var app               = getApp();
             app.globalData.openid = data.openid;
-            app.globalData.uid    = data.uid;
+            app.globalData.uid    = data.uid;  
             xihe._getSetting();
         }; 
 
-        xihe._login = function(){ 
+        xihe._login = function(){  
             wx.login({
-                success: res => {
+                success: res => { 
                     // 发送 res.code 到后台换取 openId, sessionKey, unionId
                     xihe.post({
                         url: "/api/wechat/get_openid_sessionkey",
@@ -32,10 +32,14 @@ App({
                             grant_type: "authorization_code",
                             agent_uid: wx.getStorageSync('agent_uid')
                         },
-                        callback: function (data) {
+                        callback: function (data) { 
                             xihe._get_openid_callback(data);
                         }
                     });
+                },
+                fail: res => {
+                    console.log("login failed");
+                    console.log(res);  
                 }
             })
         }; 
@@ -47,19 +51,21 @@ App({
                     // 可以将 res 发送给后台解码出 unionId  
                     if (App.globalData.openid){ 
                         var submitData = {
-                            openid: App.globalData.openid,
+                            openid        : App.globalData.openid,
                             userinfo      : res.rawData,
                             encrypteddata : res.encryptedData
                         };
                         xihe.post({
                             url: "/api/wechat/update_userinfo",
                             data: submitData,
-                            callback: function (data) {  
+                            callback: function (data) {   
                                 App.globalData.userinfo = JSON.parse(data.data.userinfo);
                             }
                         });
                     }else{
-                        console.log(res);
+                        console.log('did not have openid');
+                        // console.log(res);
+                        // xihe._login();
                     }
 
                     // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
@@ -78,21 +84,20 @@ App({
                 success: res => {  
                     if (!res.authSetting['scope.userInfo']) {  
                         xihe._getUserInfo(); 
-                        
                     }else {
                         // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框 
                         xihe._getUserInfo();
-                       
                     }
                 },
                 fail: res => {
-                    console.log(res);
+                    //console.log(res);
                 }
             })
         };
  
         wx.checkSession({
             success: res => {  
+                console.log('logined'); 
                 if ( !this.globalData.openid ){ 
                     xihe._login();
                 } else if ( !this.globalData.userinfo ){

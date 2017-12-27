@@ -8,7 +8,6 @@ Page({
      */
     data: {
         userInfo: {},
-        uid : 0,
         collections : [],
         base_url: xihe.config.url,
         folders : [],
@@ -20,8 +19,7 @@ Page({
      */
     onLoad: function (options) {
         this.setData({
-            userInfo : app.globalData.userinfo,
-            uid      : app.globalData.uid
+            userInfo : app.globalData.userinfo
         });
 
         xihe._set_user_collections = function (item, data, folder_id) {
@@ -35,7 +33,7 @@ Page({
         xihe._get_user_collections = function (item,folder_id) {
             xihe.get({
                 url: "/api/user/collections",
-                data: { uid: item.data.uid , folder_id : folder_id},
+                data: { uid: app.globalData.uid , folder_id : folder_id},
                 callback: function (data) {
                     if (data.code == 0) {
                         xihe._set_user_collections(item, data,folder_id);

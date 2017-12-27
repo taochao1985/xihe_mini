@@ -19,7 +19,6 @@
         <view class='lession-item'>
             <image mode='aspectFill' src='{{item.image_path}}' lazy-load='true' class='lession-img'></image>
             <view class='lession-info'>
-                <view class='bold lession-gray lession-normal'> </view>
                 <view class='author-time'>
                     <text class='lession-author big-font'>
                         {{item.title}}

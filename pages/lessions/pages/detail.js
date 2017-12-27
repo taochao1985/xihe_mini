@@ -9,8 +9,7 @@ Page({
   data: {
         lessionData : {},
         webUrl      : xihe.config.url,
-        postId      : 0,
-        uid         : 0
+        postId      : 0
   },
 
   /**
@@ -30,18 +29,39 @@ Page({
         WxParse.wxParse('article', 'html', article, item, 5);
     };
 
+    xihe._save_share_data = function(uid, post_id){
+        xihe.post({
+            url: "/api/lession/shared",
+            data: {uid:uid, post_id:post_id},
+            callback: function (data) {
+                
+            }
+        })
+    };
+
+    xihe._wechatPay = function(opt){
+
+    };
+
     xihe._get_lession_data = function (item, id) {
         xihe.get({
-            url: "/api/lession/show/"+id,
+            url: "/api/lession/show/" + id + "/" + app.globalData.uid,
             data: {},
             callback: function (data) {
-                xihe._set_lession_data(item, data.data);
+                if(data.code == 0 ){
+                    xihe._set_lession_data(item, data.data);
+                } else if (data.code == 10001){
+                    wx.navigateBack({
+                        delta: 1
+                    })
+                }else{
+                    xihe._wechatPay();
+                }
             }
         });
     }; 
     this.setData({
-        postId : options.id,
-        uid    : wx.getStorageSync("uid")
+        postId : options.id
     });
 
     xihe._get_lession_data(this, options.id);
@@ -96,10 +116,10 @@ Page({
       var data = this.data;
       return {
           title    : data.lessionData.title,
-          path     : '/pages/lessions/pages/detail?agent_uid='+data.uid+'&id=' + data.postId,
+          path: '/pages/lessions/pages/detail?agent_uid=' + app.globalData.uid+'&id=' + data.postId,
           imageUrl : data.lessionData.image_path,
           success  : function (res) {
-              // 转发成功
+              xihe._save_share_data(app.globalData.uid, data.postId);
           },
           fail: function (res) {
               // 转发失败

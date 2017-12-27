@@ -6,8 +6,7 @@ Page({
         countLimit:9,
         description:"",
         uploadUrls:"",
-        stepNum:0,
-        uid : 0
+        stepNum:0
     },
     onLoad: function (options) {
         var options_url = wx.getStorageSync("img_urls");
@@ -18,9 +17,7 @@ Page({
             });
             wx.setStorageSync("img_urls", "");
         }
-        this.setData({
-            uid: app.globalData.uid
-        });
+        
         xihe._upload_complete = function (res, that){
             res = JSON.parse(res);
             if (res.errno == 0){
@@ -44,7 +41,7 @@ Page({
             var submit_data = {
                 description : e.detail.value.description,
                 image_path  : that.data.uploadUrls,
-                user_id     : that.data.uid
+                user_id     : app.globalData.uid
             };
 
             xihe.post({
