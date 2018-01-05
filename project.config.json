@@ -8,9 +8,10 @@
 		"newFeature": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "1.6.4",
-	"appid": "wx03c4a7af3ca67e09",
-	"projectname": "XiHe",
+	"libVersion": "1.7.4",
+	"appid": "wx798a94ca49cd4396",
+	"projectname": "%E5%85%AE%E5%92%8C%E6%91%84%E5%BD%B1%E4%BF%B1%E4%B9%90%E9%83%A8",
+	"isGameTourist": false,
 	"condition": {
 		"search": {
 			"current": -1,
@@ -18,6 +19,10 @@
 		},
 		"conversation": {
 			"current": -1,
+			"list": []
+		},
+		"game": {
+			"currentL": -1,
 			"list": []
 		},
 		"miniprogram": {

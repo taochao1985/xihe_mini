@@ -39,8 +39,20 @@ Page({
         })
     };
 
-    xihe._wechatPay = function(opt){
-
+    xihe._wechatPay = function (item, id, opt){
+        opt = JSON.parse(opt);
+        wx.requestPayment({
+            'timeStamp': opt.timeStamp,
+            'nonceStr': opt.nonceStr,
+            'package': opt.package,
+            'signType': 'MD5',
+            'paySign': opt.paySign,
+            'success': function (res) {
+                xihe._get_lession_data(item,id );  
+            },
+            'fail': function (res) { 
+            }
+        })
     };
 
     xihe._get_lession_data = function (item, id) {
@@ -55,7 +67,7 @@ Page({
                         delta: 1
                     })
                 }else{
-                    xihe._wechatPay();
+                    xihe._wechatPay(item, id, data.data);
                 }
             }
         });

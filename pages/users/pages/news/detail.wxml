@@ -1,0 +1,18 @@
+<view class='detail-title-top'></view>
+<view class='detail-title-time'>
+    <view class='detail-title big-font bold'>
+        {{newsData.title}}
+    </view>
+    <view class='detail-author-time small-font'>
+         
+        <text class='lession-time'>
+            {{newsData.created}}
+        </text>
+    </view>
+</view>
+
+<import src="../../../common/lib/wxParse/wxParse.wxml"/>
+<view class="wxParse">
+    <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
+</view>
+

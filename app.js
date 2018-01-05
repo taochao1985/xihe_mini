@@ -6,9 +6,17 @@ App({
         openid   : '',
         uid      : 0 
     },
-    onLaunch: function (options) {  
-        if (options.agent_uid ){
-            wx.setStorageSync('agent_uid', options.agent_uid);
+    onLaunch: function (options) {   
+        // wx.showModal({
+        //     title: "留住美原来如此简单",
+        //     content: "兮和摄影俱乐部提供的服务：\r\n 1、俱乐部为免费您提供发布摄影作品平台，与其他摄影爱好者一起讨论；兮和老师也会时常进行点评。\r\n 2、付费会员建立自己的收藏夹，收集喜欢的作品。\r\n 3、付费会员收听一年50节摄影教学课程（视频+图文），每周四晚上8：00更新，无间断。\r\n4、付费会员收听一年200张佳作评析课程（语音+图文），每周一、二、三、五晚上8：00更新，无间断。\r\n 5、本产品为虚拟内容服务，一经订阅成功，不可退款，敬请理解。",
+        //     showCancel: true,
+        //     confirmText: "立即入会",
+        //     cancelText: "免费体验"
+        // })
+
+        if (options.query.agent_uid ){
+            wx.setStorageSync('agent_uid', options.query.agent_uid);
         }else{
             wx.setStorageSync('agent_uid', 0);
         }
@@ -74,6 +82,9 @@ App({
                     if ( app.userInfoReadyCallback ) {
                         app.userInfoReadyCallback(res)
                     }
+                },
+                fail: res => {
+                    console.log(res);
                 }
             })
         };
@@ -90,7 +101,7 @@ App({
                     }
                 },
                 fail: res => {
-                    //console.log(res);
+                    console.log(res);
                 }
             })
         };

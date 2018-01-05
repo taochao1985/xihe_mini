@@ -21,8 +21,7 @@ function post(opt) {
             str.push(encodeURIComponent(p) + "=" + encodeURIComponent(json[p]));
         }
         return str.join("&");
-    }
-    console.log(config.url + opt.url);
+    } 
     wx.request({
         url: config.url + opt.url,
         data: json2Form(opt.data),
@@ -30,7 +29,7 @@ function post(opt) {
         header: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
-        success: function (res) {
+        success: function (res) { 
             if (opt.callback) {
                 return opt.callback(res.data);
             }

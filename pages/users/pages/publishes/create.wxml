@@ -6,7 +6,7 @@
             <view class="weui-cell__bd">
               <view class="weui-uploader">
                 <view class="weui-uploader__hd">
-                     <textarea placeholder="来说点什么吧..." auto-focus name="description" />   
+                     <textarea placeholder="来说点什么吧..." auto-focus name="description" value="{{description}}" />   
                 </view>
                 <view class="weui-uploader__bd">
                   <view class="weui-uploader__files">

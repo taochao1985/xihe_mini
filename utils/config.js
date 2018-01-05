@@ -1,5 +1,5 @@
-var domain = 'photo.legendtao1985.com';
+var domain = 'www.photoclub.vip';
 
 module.exports = {
-    url: 'http://' + domain
+    url: 'https://' + domain
 }

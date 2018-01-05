@@ -7,7 +7,7 @@
   <view class="index-bd">
     <view class="kind-list">
         <block wx:for-items="{{list}}" wx:key="{{item.id}}" wx:for-index="idx">
-            <navigator url="pages/{{item.url}}?uid={{uid}}" class="navigator" >
+            <navigator url="pages/{{item.url}}?uid={{uid}}" class="navigator user-navi{{idx}}" >
                 <view class="kind-list-item user-navi{{index}}">
                     <view id="{{item.id}}" class="kind-list-item-hd">
                         <image src='{{item.img_path}}' class='user-index-icon'></image>
@@ -16,6 +16,38 @@
                 </view>
             </navigator>
         </block>
+         <view wx:if='{{agent_status==0}}' class="kind-list-item " bindtap='applyAgent'>
+                <view id="{{item.id}}" class="kind-list-item-hd">
+                    <image src='../common/images/publishes_agent.png' class='user-index-icon'></image>
+                    <view class="kind-list-text">申请代理</view>
+                </view>
+            </view>
+            <view wx:if='{{agent_status==1}}' class="kind-list-item ">
+                <view id="{{item.id}}" class="kind-list-item-hd">
+                    <image src='../common/images/publishes_agent.png' class='user-index-icon'></image>
+                    <view class="kind-list-text">已是代理</view>
+                </view>
+            </view>
+            <view wx:if='{{agent_status==2}}' class="kind-list-item ">
+                <view id="{{item.id}}" class="kind-list-item-hd">
+                    <image src='../common/images/publishes_agent.png' class='user-index-icon'></image>
+                    <view class="kind-list-text">代理申请审核中</view>
+                </view>
+            </view>
+            <view wx:if='{{agent_status==3}}' class="kind-list-item ">
+                <view id="{{item.id}}" class="kind-list-item-hd">
+                    <image src='../common/images/publishes_agent.png' class='user-index-icon'></image>
+                    <view class="kind-list-text">审核已拒绝：{{reason}}</view>
+                </view>
+            </view>
+            <navigator url="pages/news/detail?id=1&uid={{uid}}" class="navigator" >
+                <view  class="kind-list-item user-navi{{index}}">
+                    <view  class="kind-list-item-hd">
+                        <image src='../common/images/publishes_club.png' class='user-index-icon'></image>
+                        <view class="kind-list-text">关于俱乐部</view>
+                    </view>
+                </view>    
+            </navigator>
     </view>
   </view>
 </view>

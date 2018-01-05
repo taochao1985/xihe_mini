@@ -32,3 +32,6 @@ page{
 .user-navi0{
     margin-bottom:38rpx;
 }
+.user-navi2{
+    margin-bottom:70rpx;
+}

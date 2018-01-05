@@ -138,18 +138,20 @@ swiper{
 
 .publish-collect{
     position: absolute;
+    width: 80rpx !important;
+    height: 40rpx !important;
 }
 .publish-one-image .publish-collect{
-    margin-top: 120px;
-    margin-left: 76%;
+    margin-top: 115px;
+    margin-left: 70%;
 }
 .publish-two-image .publish-collect{
-    margin-top: 120px;
-    margin-left: 34%;
+    margin-top: 115px;
+    margin-left: 30%;
 }
 .publish-three-image .publish-collect{
-    margin-top: 74px;
-    margin-left: 20%;
+    margin-top: 67px;
+    margin-left: 17%;
 }
 .publish-like{
     margin-left: 20rpx; 

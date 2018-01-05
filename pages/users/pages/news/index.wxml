@@ -1,0 +1,15 @@
+<view class='lession-list'>
+    <block wx:for="{{news}}" wx:key="unique">
+        <navigator url='/pages/users/pages/news/detail?id={{item.id}}'>
+        <view class='lession-item'> 
+            <text class='lession-author big-font'>
+                {{item.title}}
+            </text>
+            <text class='lession-time smallest-font'>
+                {{item.created}}
+            </text> 
+            <view class='clearfix'></view>
+        </view> 
+        </navigator>   
+    </block>
+</view>

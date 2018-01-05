@@ -29,8 +29,12 @@ Page({
             }
         };
 
-        xihe._save_form_complete = function(res){
+        xihe._save_form_complete = function(res, that){
             if( res.code == 0 ){
+                that.setData({
+                    imageList: [],
+                    description: ""
+                });
                 wx.navigateTo({
                     url: '/pages/users/pages/publishes/index',
                 })
@@ -48,7 +52,7 @@ Page({
                 url : "/api/publish/store",
                 data : submit_data,
                 callback : function(data){
-                    xihe._save_form_complete(data);
+                    xihe._save_form_complete(data, that);
                 }
             })
         };
