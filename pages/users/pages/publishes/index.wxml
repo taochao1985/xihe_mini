@@ -39,22 +39,43 @@
                 </view>
                 
                 <block wx:for-items="{{publish.data}}" wx:for-item="item" wx:key="idex">
-                    <view class='publish-detail' bindlongpress='longPress'>
-                        <view class='publish-images left'>
-                            <block wx:if='{{item.image_path.length > 0 }}' wx:for-items="{{item.image_path}}" wx:for-item="image" wx:key="index" >
-                                <image data-images='{{item.image_url}}' data-src='{{image}}' src='{{image}}' mode='aspectFill' class='publish-image' bindtap='previewImage'></image>
-                            </block>
-                        </view>
-                        <view class='left publish-info publish-info-extra' wx:if='{{item.image_path.length > 1 }}'>{{item.description}}</view>
-                        <view class='left publish-info' wx:else>{{item.description}}</view>
-                        <view class='clearfix'></view>
-                    </view>
-                    <view class='publish-comments-content' wx:if="{{item.comments.length > 0}}">
-                        <block wx:for-items="{{item.comments}}" wx:for-item="comment" wx:key="index">
-                            <view class='small-font'>
-                                <text class='blue-font '>{{comment.nickname}}：</text>{{comment.content}}
+                    <view  wx:if="{{ targetUid == currentUid }}" bindlongpress='longPress' data-id="{{item.id}}">
+                        <view class='publish-detail' >
+                            <view class='publish-images left'>
+                                <block wx:if='{{item.image_path.length > 0 }}' wx:for-items="{{item.image_path}}" wx:for-item="image" wx:key="index" >
+                                    <image data-images='{{item.image_url}}' data-src='{{image}}' src='{{image}}' mode='aspectFill' class='publish-image' bindtap='previewImage'></image>
+                                </block>
                             </view>
-                        </block>    
+                            <view class='left publish-info publish-info-extra' wx:if='{{item.image_path.length > 1 }}'>{{item.description}}</view>
+                            <view class='left publish-info' wx:else>{{item.description}}</view>
+                            <view class='clearfix'></view>
+                        </view>
+                        <view class='publish-comments-content' wx:if="{{item.comments.length > 0}}">
+                            <block wx:for-items="{{item.comments}}" wx:for-item="comment" wx:key="index">
+                                <view class='small-font'>
+                                    <text class='blue-font '>{{comment.nickname}}：</text>{{comment.content}}
+                                </view>
+                            </block>    
+                        </view>
+                    </view>
+                    <view wx:else >
+                        <view class='publish-detail' >
+                            <view class='publish-images left'>
+                                <block wx:if='{{item.image_path.length > 0 }}' wx:for-items="{{item.image_path}}" wx:for-item="image" wx:key="index" >
+                                    <image data-images='{{item.image_url}}' data-src='{{image}}' src='{{image}}' mode='aspectFill' class='publish-image' bindtap='previewImage'></image>
+                                </block>
+                            </view>
+                            <view class='left publish-info publish-info-extra' wx:if='{{item.image_path.length > 1 }}'>{{item.description}}</view>
+                            <view class='left publish-info' wx:else>{{item.description}}</view>
+                            <view class='clearfix'></view>
+                        </view>
+                        <view class='publish-comments-content' wx:if="{{item.comments.length > 0}}">
+                            <block wx:for-items="{{item.comments}}" wx:for-item="comment" wx:key="index">
+                                <view class='small-font'>
+                                    <text class='blue-font '>{{comment.nickname}}：</text>{{comment.content}}
+                                </view>
+                            </block>    
+                        </view>
                     </view>
                 </block>
             </view>

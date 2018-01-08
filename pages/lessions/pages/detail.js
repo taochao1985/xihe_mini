@@ -55,6 +55,18 @@ Page({
         })
     };
 
+    xihe._create_wechat_pay = function(item, id){
+        xihe.post({
+            url: "/api/user/create_wechat_pay",
+            data: { uid: app.globalData.uid},
+            callback: function (data) {
+                if (data.code == 0) {
+                    xihe._wechatPay(item, id, data.data);
+                }
+            }
+        });
+    };
+
     xihe._get_lession_data = function (item, id) {
         xihe.get({
             url: "/api/lession/show/" + id + "/" + app.globalData.uid,
@@ -67,7 +79,8 @@ Page({
                         delta: 1
                     })
                 }else{
-                    xihe._wechatPay(item, id, data.data);
+                    xihe._create_wechat_pay(item, id);
+                    
                 }
             }
         });
@@ -90,7 +103,59 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+      xihe._getUserInfo = function () {
+          var App = getApp();
+          wx.getUserInfo({
+              success: res => {
+                  // 可以将 res 发送给后台解码出 unionId  
+                  if (App.globalData.openid) {
+                      var submitData = {
+                          openid: App.globalData.openid,
+                          userinfo: res.rawData,
+                          encrypteddata: res.encryptedData
+                      };
+                      xihe.post({
+                          url: "/api/wechat/update_userinfo",
+                          data: submitData,
+                          callback: function (data) {
+                              App.globalData.userinfo = JSON.parse(data.data.userinfo);
+                          }
+                      });
+                  } else {
+                      console.log('did not have openid');
+                      // console.log(res);
+                      // xihe._login();
+                  }
+
+                  // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
+                  // 所以此处加入 callback 以防止这种情况
+                  var app = getApp();
+                  if (app.userInfoReadyCallback) {
+                      app.userInfoReadyCallback(res)
+                  }
+              },
+              fail: res => {
+                  console.log(res);
+              }
+          })
+      };
+
+      xihe._getSetting = function () {
+          // 获取用户信息
+          wx.getSetting({
+              success: res => {
+                  if (!res.authSetting['scope.userInfo']) {
+                      xihe._getUserInfo();
+                  } else {
+                      // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框 
+                      xihe._getUserInfo();
+                  }
+              },
+              fail: res => {
+                  console.log(res);
+              }
+          })
+      };
   },
 
   /**

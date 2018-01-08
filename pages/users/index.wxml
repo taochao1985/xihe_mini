@@ -1,3 +1,21 @@
+<view class="drawer_container"  wx:if="{{showModalStatus}}">
+  <!--弹窗部分-->
+  <view class="drawer_box">
+    <view class="drawer_title">{{apply_title}}</view>
+    <view class="drawer_content normal-font">
+        <import src="../common/lib/wxParse/wxParse.wxml"/>
+        <view class="wxParse">
+            <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
+        </view>
+    </view>
+    <view class='drawer-footer normal-font'>
+        <view class='drawer-footer-left left' bindtap='freeTrial'>取消</view>
+        <view class='left drawer-confirm' bindtap='applyAgent'>立即申请</view>
+    </view>
+  </view>
+</view>
+
+
 <view class="index">
     <view class='user-index-thumb-name'>
         <image src='{{userInfo.avatarUrl}}' mode='aspectFill'></image>
@@ -16,7 +34,7 @@
                 </view>
             </navigator>
         </block>
-         <view wx:if='{{agent_status==0}}' class="kind-list-item " bindtap='applyAgent'>
+         <view wx:if='{{agent_status==0}}' class="kind-list-item " bindtap='applyAgentModal'>
                 <view id="{{item.id}}" class="kind-list-item-hd">
                     <image src='../common/images/publishes_agent.png' class='user-index-icon'></image>
                     <view class="kind-list-text">申请代理</view>

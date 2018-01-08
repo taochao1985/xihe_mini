@@ -20,7 +20,7 @@
             <image mode='aspectFill' src='{{item.image_path}}' lazy-load='true' class='lession-img'></image>
             <view class='lession-info'>
                 <view class='author-time'>
-                    <text class='lession-author big-font'>
+                    <text class='lession-author normal-font'>
                         {{item.title}}
                     </text>
                     <text class='lession-time smallest-font'>

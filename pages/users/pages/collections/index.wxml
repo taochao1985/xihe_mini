@@ -11,11 +11,12 @@
     </block>
 </scroll-view>
 <block wx:for-items="{{collections}}" wx:key="idx" wx:for-index="idx" wx:for-item="item">
-    <view class='collect-item'>
+    <view class='collect-item' bindlongtap="changeFolder" data-id="{{item.collect_id}}">
         <image src='{{item.image_path}}' mode='aspectFill'  class='item-image'></image>
         <view class='item-info'>
             <view class='item-nickname bold big-font'>{{item.nickname}}</view>
             <view class='item-info gray-font normal-font'>{{item.created}}</view>
+            <view class='cancel-collection normal-font gray-font' bindtap='cancelCollection' data-id="{{item.collect_id}}">取消收藏</view>
         </view>
     </view>    
 </block>   

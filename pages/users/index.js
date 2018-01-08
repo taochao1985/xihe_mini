@@ -1,4 +1,5 @@
 var xihe = require('../../utils/request.js');
+var WxParse = require('../common/lib/wxParse/wxParse.js');
 var app  = getApp();
 Page({
     data: {
@@ -31,7 +32,9 @@ Page({
         followTime : 0,
         agent_status : 0,
         reason : "",
-        apply_note : ""
+        apply_note : "",
+        apply_title : "",
+        showModalStatus : false
     },
     onLoad: function (options) {
         this.setData({
@@ -43,8 +46,10 @@ Page({
                 followTime   : data.count,
                 agent_status : data.agent_status,
                 reason       : data.reason,
-                apply_note   : data.apply_note
-            })
+                apply_title  : data.apply_title
+            });
+            var article = data.apply_note;
+            WxParse.wxParse('article', 'html', article, item, 5);
         };
 
         xihe._get_follow_count = function(item ){
@@ -72,39 +77,45 @@ Page({
             url: '/pages/users/pages/publishes/index',
         })
     }, 
+
+    freeTrial: function (e) {
+        this.setData({
+            showModalStatus: false
+        });
+    },
+    applyAgentModal: function(e){
+        this.setData({
+            showModalStatus: true
+        });
+    },
+
     applyAgent: function(e){
         var that = this;
-        wx.showModal({
-            title: "申请代理",
-            content: that.data.apply_note,
-            showCancel: false,
-            confirmText: "立即申请",
-            success: function (res) {
-                if (res.confirm) {
-                    xihe.post({
-                        url: "/api/user/apply_agent",
-                        data: {
-                            uid: app.globalData.uid
-                        },
-                        callback: function (data) {
+        this.setData({
+            showModalStatus: false
+        });
+        
+        xihe.post({
+            url: "/api/user/apply_agent",
+            data: {
+                uid: app.globalData.uid
+            },
+            callback: function (data) {
 
-                            var icon = 'success';
-                            if( data.code == 1){
-                                icon = 'danger';
-                            }else{
-                                that.setData({
-                                    agent_status : 2
-                                })
-                            }
-                            wx.showToast({
-                                title: data.msg,
-                                icon: icon,
-                                duration: 2000
-                            })
-                        }
-                    });
+                var icon = 'success';
+                if( data.code == 1){
+                    icon = 'danger';
+                }else{
+                    that.setData({
+                        agent_status : 2
+                    })
                 }
+                wx.showToast({
+                    title: data.msg,
+                    icon: icon,
+                    duration: 2000
+                })
             }
-        })
+        });
     }
 })

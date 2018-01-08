@@ -69,3 +69,87 @@ view{
     margin: 0 !important;
     padding: 0 !important;
 }
+
+
+
+/*content*/
+
+/*弹窗底色*/
+
+.drawer_container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  /*R：红色值 G：绿色值 B：蓝色值 (正整数|百分数) A：透明度(取值0~1之间)*/
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+}
+
+/*弹窗*/
+
+.drawer_box {
+  width: 650rpx;
+  position: absolute;
+  top: 33%;
+  left: 0;
+  z-index: 1001;
+  background: #fafafa;
+  margin: -100px 50rpx 0rpx 50rpx;
+  border-radius: 20rpx;
+}
+
+/*关闭*/
+
+.modal_close {
+  padding: 15rpx;
+  font: 35rpx "microsoft yahei";
+  border: 6rpx solid #008000;
+  color: white;
+  background-color: #3cb371;
+  position: absolute;
+  right: -20rpx;
+  top: -20rpx;
+  z-index: 1003;
+  width: 50rpx;
+  height: 50rpx;
+  text-align: center;
+  border-radius: 50%;
+}
+
+/*标题*/
+
+.drawer_title {
+  padding: 15px;
+  font: 15px "microsoft yahei";
+  height: 30rpx;
+  text-align: center;
+  border-top-left-radius: 20rpx;
+  border-top-right-radius: 20rpx;
+  border-bottom: 1px solid #ddd;
+}
+/*顶部单个字母选中样式*/
+
+.nowInitial {
+  border-bottom: 1px solid red;
+}
+
+.drawer_content{
+    padding: 20rpx 30rpx;
+    border-bottom: 1px solid #ddd;
+}
+.drawer_content view{
+    margin-bottom: 20rpx;
+}
+.drawer-footer view{
+    width: 49%;
+    text-align: center;
+    padding: 25rpx 0;
+}
+.drawer-footer-left{
+    border-right: 1px solid #ddd;
+}
+.drawer-confirm{
+    color: #33c700;
+}

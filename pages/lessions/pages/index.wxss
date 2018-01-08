@@ -58,19 +58,17 @@
 }
 .author-time{
     font-size: 22rpx;
-    margin-top:60rpx;
+    margin-top:25rpx;
 }
 .lession-author{
     width: 75%;
     float: left;
     text-align: justify;
-    height: 80rpx;
+    height: 115rpx;
     overflow: hidden;
     line-height: 40rpx;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 .lession-time{
     float:right;
-    margin-top: 25rpx;
+    margin-top: 65rpx;
 }

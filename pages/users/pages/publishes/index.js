@@ -200,17 +200,23 @@ Page({
         }
     },
 
-    longPress: function(){
-        console.log('long pressed');
-
+    longPress: function(e){ 
+        var publish_id = e.currentTarget.dataset.id;
+        var that       = this;
         wx.showModal({
-            title: '提示',
-            content: '这是一个模态弹窗',
+            title: '操作提示',
+            content: '确认删除此作品？',
             success: function (res) {
                 if (res.confirm) {
-                    console.log('用户点击确定')
-                } else if (res.cancel) {
-                    console.log('用户点击取消')
+                    xihe.post({
+                        url: "/api/publish/destory",
+                        data: { uid: app.globalData.uid, publish_id:publish_id},
+                        callback: function (data) {
+                            if (data.code == 0) {
+                                xihe._get_publish_data(that, 0);
+                            }
+                        }
+                    });
                 }
             }
         })

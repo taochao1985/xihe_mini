@@ -20,11 +20,23 @@ Page({
         inputTxt : "",
         target_data : {},
         totalImageUrls : "",
-        collect_folders:[]
+        collect_folders:[],
+        showModalStatus : false
     },
     onShow: function () { 
         var item = this;
+        
         xihe._set_index_data = function (item, data) {
+            if (app.globalData.free_trial == 0 && item.data.showModalStatus == false) {
+                item.setData({
+                    showModalStatus: true
+                });
+            }else{
+                item.setData({
+                    showModalStatus: false
+                });
+            }
+
             item.setData({
                 imgUrls: data.slider_images,
                 totalImageUrls: data.slider_images_url,
@@ -103,12 +115,14 @@ Page({
 
             // 登录
             xihe._get_openid_callback = function (data) { 
-                app.globalData.openid = data.openid;
-                app.globalData.uid = data.uid;   
+                app.globalData.openid     = data.openid;
+                app.globalData.uid        = data.uid;   
+                app.globalData.agent_id   = data.agent_id;
+                app.globalData.free_trial = data.free_trial;
+                app.globalData.pay_status = data.pay_status;
                 xihe._getSetting();
                 xihe._get_index_data();
             };
-
 
         }else{ 
             xihe._get_index_data();
@@ -205,7 +219,58 @@ Page({
                 })
             } 
         };
+
+        xihe._wechatPay = function (item, opt) {
+            opt = JSON.parse(opt);
+            wx.requestPayment({
+                'timeStamp': opt.timeStamp,
+                'nonceStr': opt.nonceStr,
+                'package': opt.package,
+                'signType': 'MD5',
+                'paySign': opt.paySign,
+                'success': function (res) {
+                    item.setData({
+                        showModalStatus: false
+                    })
+                },
+                'fail': function (res) {
+                }
+            })
+        };
+
+        xihe._create_wechat_pay = function (item) {
+            xihe.post({
+                url: "/api/user/create_wechat_pay/",
+                data: { uid: app.globalData.uid},
+                callback: function (data) {
+                    if (data.code == 0) {
+                        xihe._wechatPay(item, data.data);
+                    }
+                }
+            });
+        };
     },
+
+    joinClub: function(e){
+        xihe._create_wechat_pay(this);
+    },
+
+    freeTrial: function(e){
+        var that = this;
+        xihe.post({
+            url: "/api/user/update_free_trial",
+            data: { uid: app.globalData.uid },
+            callback: function (data) {
+                if (data.code == 0) {
+                    app.globalData.free_trial = 1;
+                    that.setData({
+                        showModalStatus: false
+                    })
+                }
+            }
+        });
+    },
+
     onReachBottom: function (e) {
         var current_page = this.data.currentPage;
         var total_page   = this.data.totalPages;

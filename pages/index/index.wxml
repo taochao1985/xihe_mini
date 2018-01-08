@@ -1,3 +1,22 @@
+<view class="drawer_container"  wx:if="{{showModalStatus}}">
+  <!--弹窗部分-->
+  <view class="drawer_box">
+    <view class="drawer_title">留住美原来如此简单</view>
+    <view class="drawer_content normal-font">
+        <view>兮和摄影俱乐部提供的服务：</view>
+        <view>1、俱乐部为免费您提供发布摄影作品平台，与其他摄影爱好者一起讨论；兮和老师也会时常进行点评。</view>
+        <view>2、付费会员建立自己的收藏夹，收集喜欢的作品。</view>
+        <view>3、付费会员收听一年50节摄影教学课程（视频+图文），每周四晚上8：00更新，无间断。</view>
+        <view>4、付费会员收听一年200张佳作评析课程（语音+图文），每周一、二、三、五晚上8：00更新，无间断。</view>
+        <view>5、本产品为虚拟内容服务，一经订阅成功，不可退款，敬请理解。</view>
+    </view>
+    <view class='drawer-footer normal-font'>
+        <view class='drawer-footer-left left' bindtap='freeTrial'>免费体验7天</view>
+        <view class='left drawer-confirm' bindtap='joinClub'>立即入会</view>
+    </view>
+  </view>
+</view>
+
 <!--index.wxml-->
 <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" indicator-active-color="{{activecolor}}">
     <block wx:for="{{imgUrls}}" wx:key="unique">
@@ -196,15 +215,15 @@
                             <view class='clearfix'></view>
                         </view>
                         
-                        <view class='publish-comments-input' wx:if='{{uid != item.uid}}'>
+                        <view class=' publish-comments-input' wx:if='{{uid != item.uid}}'>
                             <input placeholder="想说什么请留言吧..." placeholder-class='gray-font' class='small-font' data-index='{{idx}}' data-post-id='{{item.post_id}}' confirm-type='send' type='text' bindconfirm='saveComment' value='{{inputTxt}}'/>
                         </view>
-                        <view class='publish-time'>
-                            <text class='smaller-font gray-font'>{{item.time_info}}</text>
+                        <view class=' publish-time'>
+                            <text class='clearfix smaller-font gray-font'>{{item.time_info}}</text>
                         </view>
                         <view class='publish-comments-content' wx:if="{{item.comments.length > 0}}">
                             <block wx:for-items="{{item.comments}}" wx:for-item="comment" wx:key="index">
-                                <view class='normal-font'>
+                                <view class=' normal-font'>
                                     <text class='blue-font '>{{comment.nickname}}：</text>{{comment.content}}
                                 </view>
                             </block>    
