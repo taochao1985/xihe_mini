@@ -13,7 +13,8 @@ Page({
         folders : [],
         folders_org : [],
         selected_folder : 0,
-        folder_name : "" 
+        folder_name : "",
+        collect_images:"" 
     },
 
     /**
@@ -29,7 +30,8 @@ Page({
                 collections: data.collections,
                 folders : data.folders,
                 folders_org: data.folders_org,
-                selected_folder : folder_id
+                selected_folder : folder_id,
+                collect_images: data.collect_images
             });
         };
 
@@ -71,7 +73,7 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
-
+        app.globalData.check_user();
     },
 
     /**
@@ -108,6 +110,17 @@ Page({
     onShareAppMessage: function () {
 
     },
+
+    previewImage: function(e) {
+        var current = e.target.dataset.src;
+        var images = this.data.collect_images;
+        images = images.split(';');
+        wx.previewImage({
+            current: current,
+            urls: images
+        })
+    },
+
     new_folder: function(e){
         wx.navigateTo({
             url: 'new_folder',

@@ -1,0 +1,34 @@
+
+.lession-item{
+    padding: 20rpx;
+    border-bottom: 1px solid #ddd;
+}
+.lession-img{
+    width: 242rpx;
+    height: 140rpx;
+    margin-right: 20rpx;
+    float: left;
+}
+.lession-info{
+    float:left;
+}
+.lession-gray{
+    color:#333;
+}
+.lession-normal{
+    font-size: 30rpx;
+}
+.author-time{
+    font-size: 22rpx;
+}
+.lession-time{
+    float:right;
+}
+.lession-author{
+    float: left;
+    margin-top:-40rpx;
+}
+.amount-view{
+    padding: 0 20rpx;
+    margin-top: 20rpx;
+}

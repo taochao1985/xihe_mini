@@ -1,4 +1,4 @@
-<view class='friend-main-top'>
+<view class='friend-main-top hidden'>
     <image src='{{userInfo.avatarUrl}}' class='friends-top' mode='aspectFill'></image>
     <image src='{{userInfo.avatarUrl}}' class='friends-top-icon' mode='aspectFill'></image>
 </view>

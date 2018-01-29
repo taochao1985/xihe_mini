@@ -1,0 +1,18 @@
+<view class='lession-list'>
+    <view class='lession-item smaller-font'> 
+        您已经为俱乐部推广了<text class='red-font normal-font bold'>{{member_count}}</text>位会员，累计积累太阳币<text class='red-font normal-font bold'>{{metal_count}}</text>枚
+    </view>
+    <block wx:for="{{records}}" wx:key="unique">
+        <navigator url='/pages/users/pages/publishes/index?uid={{item.uid}}'>
+        <view class='lession-item'> 
+            <text class='lession-author big-font'>
+                {{item.nickname}}
+            </text>
+            <text class='lession-time smallest-font'>
+                {{item.pay_time}}
+            </text> 
+            <view class='clearfix'></view>
+        </view> 
+        </navigator>   
+    </block>
+</view>

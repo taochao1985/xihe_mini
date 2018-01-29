@@ -1,4 +1,5 @@
 var xihe = require('../../../utils/request.js');
+var app = getApp();
 
 Page({
   data: {
@@ -20,7 +21,7 @@ Page({
         xihe._get_lession_type_data = function(item,id){
             xihe.get({
                 url: "/api/lession/list",
-                data: {lt_id : id},
+                data: {lt_id : id, uid:app.globalData.uid},
                 callback: function (data) {
                     xihe._set_lession_type_data(item, data.data);
                 }
@@ -28,6 +29,7 @@ Page({
         };
   },
   onShow: function () {
+      app.globalData.check_user();
       this.setData({
           selectedType: wx.getStorageSync("lession_lt_id")
       })
@@ -36,6 +38,10 @@ Page({
 
   changeType: function(e){
       var id = e.currentTarget.dataset.id;
+      wx.setStorageSync("lession_lt_id", id);
+      this.setData({
+          selectedType: id
+      })
       xihe._get_lession_type_data(this,id);
   }
 })

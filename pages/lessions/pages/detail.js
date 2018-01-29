@@ -9,7 +9,9 @@ Page({
   data: {
         lessionData : {},
         webUrl      : xihe.config.url,
-        postId      : 0
+        postId      : 0,
+        title       : '',
+        showModalStatus : false
   },
 
   /**
@@ -23,7 +25,7 @@ Page({
         });
         wx.setNavigationBarTitle({
             title: data.title
-        })
+        });
 
         var article = data.description;
         WxParse.wxParse('article', 'html', article, item, 5);
@@ -50,7 +52,11 @@ Page({
             'success': function (res) {
                 xihe._get_lession_data(item,id );  
             },
-            'fail': function (res) { 
+            'fail': function (res) {
+                
+                // wx.switchTab({
+                //     url: '/pages/index/index',
+                // })
             }
         })
     };
@@ -79,8 +85,12 @@ Page({
                         delta: 1
                     })
                 }else{
-                    xihe._create_wechat_pay(item, id);
-                    
+                    var article = data.description;
+                    WxParse.wxParse('article', 'html', article, item, 5);
+                    item.setData({
+                        title:data.title,
+                        showModalStatus: true
+                    })
                 }
             }
         });
@@ -92,6 +102,17 @@ Page({
     xihe._get_lession_data(this, options.id);
   },
 
+  freeTrial: function (e) {
+      this.setData({
+          showModalStatus: false
+      })
+      wx.navigateBack({
+          delta: 1
+      })
+  },
+  joinClub: function (e) {
+      xihe._create_wechat_pay(this, this.data.postId);
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -103,59 +124,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-      xihe._getUserInfo = function () {
-          var App = getApp();
-          wx.getUserInfo({
-              success: res => {
-                  // 可以将 res 发送给后台解码出 unionId  
-                  if (App.globalData.openid) {
-                      var submitData = {
-                          openid: App.globalData.openid,
-                          userinfo: res.rawData,
-                          encrypteddata: res.encryptedData
-                      };
-                      xihe.post({
-                          url: "/api/wechat/update_userinfo",
-                          data: submitData,
-                          callback: function (data) {
-                              App.globalData.userinfo = JSON.parse(data.data.userinfo);
-                          }
-                      });
-                  } else {
-                      console.log('did not have openid');
-                      // console.log(res);
-                      // xihe._login();
-                  }
-
-                  // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-                  // 所以此处加入 callback 以防止这种情况
-                  var app = getApp();
-                  if (app.userInfoReadyCallback) {
-                      app.userInfoReadyCallback(res)
-                  }
-              },
-              fail: res => {
-                  console.log(res);
-              }
-          })
-      };
-
-      xihe._getSetting = function () {
-          // 获取用户信息
-          wx.getSetting({
-              success: res => {
-                  if (!res.authSetting['scope.userInfo']) {
-                      xihe._getUserInfo();
-                  } else {
-                      // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框 
-                      xihe._getUserInfo();
-                  }
-              },
-              fail: res => {
-                  console.log(res);
-              }
-          })
-      };
+      app.globalData.check_user();
   },
 
   /**

@@ -7,10 +7,11 @@ App({
         uid        : 0 ,
         agent_id   : 0 ,
         free_trial : 0,
-        pay_status : 0
+        pay_status : 0,
+        check_user: xihe.check_user
     },
     onLaunch: function (options) {
-        if (options.query.agent_uid ){
+        if (options.query && options.query.agent_uid ){
             wx.setStorageSync('agent_uid', options.query.agent_uid);
         }else{
             wx.setStorageSync('agent_uid', 0);
@@ -24,7 +25,11 @@ App({
             app.globalData.agent_id   = data.agent_id;
             app.globalData.free_trial = data.free_trial;
             app.globalData.pay_status = data.pay_status;
-            xihe._getSetting();
+            if( data.userinfo == ""){
+                xihe._getSetting();
+            }else{
+                app.globalData.userinfo = JSON.parse(data.userinfo);
+            }
         }; 
 
         xihe._login = function(){  
@@ -55,7 +60,7 @@ App({
             wx.getUserInfo({
                 success: res => {
                     // 可以将 res 发送给后台解码出 unionId  
-                    if (App.globalData.openid){ 
+                    if (App.globalData.openid && !App.globalData.userinfo){ 
                         var submitData = {
                             openid        : App.globalData.openid,
                             userinfo      : res.rawData,
@@ -82,7 +87,19 @@ App({
                     }
                 },
                 fail: res => {
-                    console.log(res);
+                    console.log('a'); 
+                    wx.showModal({
+                        title: '操作提示',
+                        showCancel: false,
+                        content: '【兮和摄影俱乐部】小程序需要获取您的用户资料，用于登录。请重试登录，并确保允许小程序获取用户资料',
+                        success: function (res) {
+                            if (res.confirm) {
+                                wx.switchTab({
+                                    url: '/pages/users/index'
+                                })
+                            }
+                        }
+                    })
                 }
             })
         };

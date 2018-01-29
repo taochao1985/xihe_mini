@@ -5,10 +5,14 @@
     <image wx:else src='{{coverImage}}' mode='aspectFill' class='publishes-cover'></image>
     <view class='publishes-name-avatar'>
         <view class='publishes-like'>
-            <image src='../../../common/images/heart_normal.png' class='heart-icon left'></image>
+            <image wx:if='{{ ((targetUid != currentUid) && (isFollow == 1))}}' bindtap='userFollow' src='../../../common/images/heart_highlight.png' data-follow="1" data-uid="{{targetUid}}" class='heart-icon left'></image>
+            <image wx:elif='{{ ((targetUid != currentUid) && (isFollow == 0))}}' bindtap='userFollow' src='../../../common/images/heart_normal.png' data-follow="0" data-uid="{{targetUid}}" class='heart-icon left'></image>
+            <image wx:else src='../../../common/images/heart_normal.png' class='heart-icon left'></image>
+            
             <view class='gray-font small-font left'>{{followCount}}</view>
         </view>
-        <image src='{{userInfo.avatarUrl}}' mode='aspectFill' class='publishes-avatar'></image>
+        <navigator wx:if='{{targetUid != currentUid}}' class='blue-font' url='/pages/users/pages/publishes/index?uid={{currentUid}}' ><image src='{{userInfo.avatarUrl}}' mode='aspectFill' class='publishes-avatar'></image></navigator>
+        <image wx:else src='{{userInfo.avatarUrl}}' mode='aspectFill' class='publishes-avatar'></image>
         <view class='publishes-nickname'>{{userInfo.nickName}}</view>
     </view>
 </view> 
@@ -42,40 +46,53 @@
                     <view  wx:if="{{ targetUid == currentUid }}" bindlongpress='longPress' data-id="{{item.id}}">
                         <view class='publish-detail' >
                             <view class='publish-images left'>
-                                <block wx:if='{{item.image_path.length > 0 }}' wx:for-items="{{item.image_path}}" wx:for-item="image" wx:key="index" >
-                                    <image data-images='{{item.image_url}}' data-src='{{image}}' src='{{image}}' mode='aspectFill' class='publish-image' bindtap='previewImage'></image>
+                                <block wx:if='{{item.image_path.length > 0 }}' wx:for-items="{{item.image_path}}" wx:for-item="image" wx:key="inde" wx:for-index="ind" >
+                                    <image wx:if='{{ind < 4}}' data-images='{{item.image_url}}' data-src='{{image}}' src='{{image}}' mode='aspectFill' class='publish-image' bindtap='previewImage'></image>
                                 </block>
+                                <view class='smallest-font' wx:if='{{item.image_path.length > 4}}'>{{item.image_path.length}}张图</view>
                             </view>
                             <view class='left publish-info publish-info-extra' wx:if='{{item.image_path.length > 1 }}'>{{item.description}}</view>
                             <view class='left publish-info' wx:else>{{item.description}}</view>
                             <view class='clearfix'></view>
-                        </view>
-                        <view class='publish-comments-content' wx:if="{{item.comments.length > 0}}">
+                            <view class='publish-comments-content' wx:if="{{item.comments.length > 0}}">
                             <block wx:for-items="{{item.comments}}" wx:for-item="comment" wx:key="index">
                                 <view class='small-font'>
-                                    <text class='blue-font '>{{comment.nickname}}：</text>{{comment.content}}
+                                    <navigator class='blue-font left' url='/pages/users/pages/publishes/index?uid={{comment.uid}}' >
+                                    {{comment.nickname}}：</navigator>
+                                    <text class='left'>{{comment.content}}</text>
+                                     <view class='clearfix'></view>  
                                 </view>
                             </block>    
                         </view>
+                        </view>
+                        
                     </view>
                     <view wx:else >
                         <view class='publish-detail' >
                             <view class='publish-images left'>
-                                <block wx:if='{{item.image_path.length > 0 }}' wx:for-items="{{item.image_path}}" wx:for-item="image" wx:key="index" >
-                                    <image data-images='{{item.image_url}}' data-src='{{image}}' src='{{image}}' mode='aspectFill' class='publish-image' bindtap='previewImage'></image>
+                                <block wx:if='{{item.image_path.length > 0 }}' wx:for-items="{{item.image_path}}" wx:for-item="image" wx:key="inde" wx:for-index="ind">
+                                    <image wx:if='{{ind < 4}}' data-images='{{item.image_url}}' data-src='{{image}}' src='{{image}}' mode='aspectFill' class='publish-image' bindtap='previewImage'></image>
                                 </block>
+
+                                <view class='smallest-font' wx:if='{{item.image_path.length > 4}}'>{{item.image_path.length}}张图</view>
                             </view>
-                            <view class='left publish-info publish-info-extra' wx:if='{{item.image_path.length > 1 }}'>{{item.description}}</view>
+                            <view class='left publish-info publish-info-extra' wx:if='{{item.image_path.length > 1 }}'>{{item.description}}
+                            
+                            </view>
                             <view class='left publish-info' wx:else>{{item.description}}</view>
                             <view class='clearfix'></view>
-                        </view>
-                        <view class='publish-comments-content' wx:if="{{item.comments.length > 0}}">
+                            <view class='publish-comments-content' wx:if="{{item.comments.length > 0}}">
                             <block wx:for-items="{{item.comments}}" wx:for-item="comment" wx:key="index">
                                 <view class='small-font'>
-                                    <text class='blue-font '>{{comment.nickname}}：</text>{{comment.content}}
+                                     <navigator class='blue-font left' url='/pages/users/pages/publishes/index?uid={{comment.uid}}' >
+                                    {{comment.nickname}}：</navigator>
+                                    <text class='left'>{{comment.content}}</text>
+                                    <view class='clearfix'></view>  
                                 </view>
                             </block>    
                         </view>
+                        </view>
+                        
                     </view>
                 </block>
             </view>

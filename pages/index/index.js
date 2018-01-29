@@ -1,5 +1,6 @@
 //index.js 
 var xihe = require('../../utils/request.js'); 
+var WxParse = require('../common/lib/wxParse/wxParse.js');
 var app  = getApp();
 Page({
     data: {
@@ -21,13 +22,20 @@ Page({
         target_data : {},
         totalImageUrls : "",
         collect_folders:[],
-        showModalStatus : false
+        showModalStatus : false,
+        title:"",
+        description:'',
+        showPayBtn:0
     },
-    onShow: function () { 
+    onLoad: function () {
+        wx.showLoading({
+            title: '加载中',
+        })
+
         var item = this;
         
         xihe._set_index_data = function (item, data) {
-            if (app.globalData.free_trial == 0 && item.data.showModalStatus == false) {
+            if (app.globalData.free_trial == 0 && item.data.showModalStatus == false && app.globalData.pay_status == 0) {
                 item.setData({
                     showModalStatus: true
                 });
@@ -46,8 +54,14 @@ Page({
                 follows: data.follows,
                 currentPage: 1,
                 totalPages: data.total_pages,
-                uid: app.globalData.uid
+                uid: app.globalData.uid,
+                title:data.title,
+                showPayBtn:parseInt(data.pay_status)
             })
+            wx.hideLoading();
+
+            var article = data.description;
+            WxParse.wxParse('article', 'html', article, item, 5);
         };
         xihe._get_index_data = function () {
             xihe.get({
@@ -64,7 +78,7 @@ Page({
                 wx.getUserInfo({
                     success: res => {
                         // 可以将 res 发送给后台解码出 unionId  
-                        if (App.globalData.openid) {
+                        if (App.globalData.openid && !App.globalData.userinfo) {
                             var submitData = {
                                 openid: App.globalData.openid,
                                 userinfo: res.rawData,
@@ -97,20 +111,27 @@ Page({
             };
 
             xihe._getSetting = function () {
-                // 获取用户信息
-                wx.getSetting({
-                    success: res => {
-                        if (!res.authSetting['scope.userInfo']) {
-                            xihe._getUserInfo();
-                        } else {
-                            // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框 
-                            xihe._getUserInfo();
+                if (wx.getSetting){
+                    // 获取用户信息
+                    wx.getSetting({
+                        success: res => {
+                            if (!res.authSetting['scope.userInfo']) {
+                                xihe._getUserInfo();
+                            } else {
+                                // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框 
+                                xihe._getUserInfo();
+                            }
+                        },
+                        fail: res => {
+                            console.log(res);
                         }
-                    },
-                    fail: res => {
-                        console.log(res);
-                    }
-                })
+                    })
+                }else{
+                    wx.showModal({
+                        title: '提示',
+                        content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
+                    })
+                }
             };
 
             // 登录
@@ -234,6 +255,7 @@ Page({
                     })
                 },
                 'fail': function (res) {
+                    
                 }
             })
         };
@@ -251,9 +273,29 @@ Page({
         };
     },
 
+    onShow: function(){
+        app.globalData.check_user();
+    },
     joinClub: function(e){
         xihe._create_wechat_pay(this);
     },
+    showpaymodal: function(e){
+        this.setData({
+            showModalStatus: true,
+            showPayBtn:1
+        })
+    },
+    // replayComment: function(e){
+    //     var target = e.currentTarget.dataset;
+    //     var post_id = target.postId;
+    //     var comment_id = target.id;
+    //     var nickname = target.nickname;
+
+    //     var target_input = '#comment_input_'+post_id;
+    //     var target_item = wx.createSelectorQuery().select(target_input).boundingClientRect(function (rect) {
+    //         console.log(rect)
+    //     }).exec();
+    // },
 
     freeTrial: function(e){
         var that = this;
@@ -278,6 +320,13 @@ Page({
             xihe._get_more_publish(this, current_page);
         }
     },
+    onShareAppMessage: function () {
+        return {
+            title: '摄影人学习、交流的地盘',
+            imageUrl: 'https://www.photoclub.vip/uploads/images/201801197046FjwkTDoidA.jpg',
+            path: '/pages/index/index'//分享的页面地址
+        }
+    },
     saveComment : function(e){
         var comment_content = e.detail.value;
         var post_id         = e.currentTarget.dataset.postId;
@@ -291,8 +340,15 @@ Page({
                     content : comment_content
                 },
             callback: function (data) {
-
-                xihe._save_comment_complete(that, data, index);
+                if (data.code == 1003) {
+                    wx.showModal({
+                        title: '操作提示',
+                        showCancel: false,
+                        content: data.msg
+                    });
+                }else{
+                    xihe._save_comment_complete(that, data, index);
+                }
             }
         });
     },

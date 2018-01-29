@@ -43,6 +43,9 @@ view{
 .light-gray{
     color: #002e73;
 }
+.red-font{
+    color: #ff3334;
+}
 .gray-font{
     color: #999;
 }
@@ -92,7 +95,7 @@ view{
 .drawer_box {
   width: 650rpx;
   position: absolute;
-  top: 33%;
+  top: 29%;
   left: 0;
   z-index: 1001;
   background: #fafafa;

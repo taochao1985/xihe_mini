@@ -11,7 +11,7 @@
     border-right: 1rpx solid #ff3333;
 }
 .lession-type-limited view{
-    width: 20.33% !important;
+    width: 19.33% !important;
 }
 .lession-type view{
     display: inline-block;
@@ -71,4 +71,13 @@
 .lession-time{
     float:right;
     margin-top: 65rpx;
+}
+.read-circle{
+    width:20rpx;
+    height: 20rpx;
+    border-radius: 10rpx;
+    background: #ff3333;
+    position: absolute;
+    margin-top: -6rpx;
+    margin-left: 235rpx;
 }

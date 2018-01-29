@@ -9,14 +9,6 @@ Page({
         stepNum:0
     },
     onLoad: function (options) {
-        var options_url = wx.getStorageSync("img_urls");
-        if ( options_url != ""){
-            var image_urls = options_url.split(";");
-            this.setData({
-                imageList: image_urls
-            });
-            wx.setStorageSync("img_urls", "");
-        }
         
         xihe._upload_complete = function (res, that){
             res = JSON.parse(res);
@@ -30,6 +22,11 @@ Page({
         };
 
         xihe._save_form_complete = function(res, that){
+            
+            wx.hideToast();
+            that.setData({
+                stepNum : 0
+            });
             if( res.code == 0 ){
                 that.setData({
                     imageList: [],
@@ -38,10 +35,38 @@ Page({
                 wx.navigateTo({
                     url: '/pages/users/pages/publishes/index',
                 })
+            }else{
+                 if (res.code == 1003) {
+                    wx.showModal({
+                        title: '操作提示',
+                        showCancel: false,
+                        content: res.msg
+                    });
+                }else {
+                    wx.showModal({
+                        title: '操作提示',
+                        showCancel: false,
+                        content: res.msg,
+                        success: function (rese) {
+                            if ( res.code == 1002){
+                                if (rese.confirm) {
+                                    wx.switchTab({
+                                        url: '/pages/users/index'
+                                    })
+                                }
+                            }
+                        }
+                    })
+                }
             }
         };
 
         xihe._save_form = function(e, that){
+            wx.showToast({
+                title: "上传中",
+                icon: "loading",
+                duration: 10000
+            });
             var submit_data = {
                 description : e.detail.value.description,
                 image_path  : that.data.uploadUrls,
@@ -78,10 +103,25 @@ Page({
             }
         }
     },
+    onShow: function(options){
+        app.globalData.check_user();
+        var options_url = wx.getStorageSync("img_urls");
+        if (options_url != "") {
+            var image_urls = options_url.split(";");
+            this.setData({
+                imageList: image_urls
+            });
+            wx.setStorageSync("img_urls", "");
+        }
+        this.setData({
+            stepNum : 0,
+            uploadUrls : ""
+        });
+    },
     removeImg: function(e){
         var index = e.currentTarget.dataset.index;
         var imageList = [];
-        for(var i = 0 ; i < this.data.imageList.length ; i++ ){
+        for (var i = 0; i < this.data.imageList.length; i++) {
             if (i != index ){
                 imageList.push(this.data.imageList[i]);
             }
@@ -114,6 +154,7 @@ Page({
     },
 
     formSubmit: function(e){
+        
         xihe._getImage({
             target : this,
             form_item : e,

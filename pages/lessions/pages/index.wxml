@@ -17,6 +17,7 @@
     <block wx:for="{{lessions}}" wx:key="unique">
         <navigator url='/pages/lessions/pages/detail?id={{item.id}}'>
         <view class='lession-item'>
+            <view wx:if='{{!item.is_read}}' class='read-circle'></view>
             <image mode='aspectFill' src='{{item.image_path}}' lazy-load='true' class='lession-img'></image>
             <view class='lession-info'>
                 <view class='author-time'>

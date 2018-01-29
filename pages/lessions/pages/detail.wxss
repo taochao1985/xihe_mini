@@ -42,3 +42,6 @@
 .lession-video{
     width: 100%;
 }
+.drawer_content view{
+    margin-bottom: 0;
+}

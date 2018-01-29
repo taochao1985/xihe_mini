@@ -3,9 +3,18 @@
   <view class="drawer_box">
     <view class="drawer_title">{{apply_title}}</view>
     <view class="drawer_content normal-font">
-        <import src="../common/lib/wxParse/wxParse.wxml"/>
-        <view class="wxParse">
-            <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
+        <view class='smaller-font drawer-confirm'>请填写相关信息，便于工作人员联系您！通过审核！</view>
+        <view class="section">
+            <input placeholder="微信号" auto-focus name="wechat_num" bindinput="wechat_num_changed"/>
+        </view>
+        <view class="section">
+            <input placeholder="手机号" type='number' name="mobile" bindinput="mobile_changed"/>
+        </view>
+        <view class="agent-note">
+            <import src="../common/lib/wxParse/wxParse.wxml"/>
+            <view class="wxParse">
+                <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
+            </view>
         </view>
     </view>
     <view class='drawer-footer normal-font'>
@@ -15,16 +24,54 @@
   </view>
 </view>
 
+<view class="drawer_container"  wx:if="{{showPayStatus}}">
+  <!--弹窗部分-->
+  <view class="drawer_box">
+    <view class="drawer_title">{{pay_title}}</view>
+    <view class="drawer_content normal-font">
+        <import src="../common/lib/wxParse/wxParse.wxml"/>
+        <view class="wxParse">
+            <template is="wxParse" data="{{wxParseData:pay_article.nodes}}"/>
+        </view>
+    </view>
+    <view class='drawer-footer normal-font'>
+        <view class='drawer-footer-left left' bindtap='freeTrial'>返回</view>
+        <view class='left drawer-confirm' bindtap='joinClub'>加入俱乐部</view>
+    </view>
+  </view>
+</view>
 
 <view class="index">
     <view class='user-index-thumb-name'>
+    <navigator url="pages/publishes/index?uid={{uid}}" class="navigator" >
         <image src='{{userInfo.avatarUrl}}' mode='aspectFill'></image>
         <view class='user-index-nickname bold'>{{userInfo.nickName}}</view>
         <view class='user-index-followed normal-font gray-font'>已被关注{{followTime}}次</view>
-    </view>     
+    </navigator>
+    </view>  
   <view class="index-bd">
     <view class="kind-list">
-        <block wx:for-items="{{list}}" wx:key="{{item.id}}" wx:for-index="idx">
+        <view class="kind-list-item repay-btn" wx:if='{{showPayBtn}}'>
+            <view  class="kind-list-item-hd">
+                <view class="kind-list-text">俱乐部会员：于{{invalid_time}}到期</view>
+                <button class='contact-user' size='mini' type='primary' bindtap='joinClub'>
+                    会员续费
+                </button>    
+            </view>
+        </view>
+        <view wx:if='{{!userInfo.nickName}}' class="kind-list-item ">
+            <view class="kind-list-item-hd">
+                <view class="kind-list-text">允许获取用户信息</view>
+                <switch bindchange='getUserInfo' checked='{{checked}}' />
+            </view>
+        </view>
+        <view wx:if='{{!showPayBtn}}' class="kind-list-item" bindtap='showPayStatus'>
+            <view  class="kind-list-item-hd">
+                <image src='../common/images/publishes_club.png' class='user-index-icon'></image>
+                <view class="kind-list-text">加入俱乐部</view>
+            </view>
+        </view>
+        <block wx:if='{{userInfo.nickName !=""}}' wx:for-items="{{list}}" wx:key="{{item.id}}" wx:for-index="idx">
             <navigator url="pages/{{item.url}}?uid={{uid}}" class="navigator user-navi{{idx}}" >
                 <view class="kind-list-item user-navi{{index}}">
                     <view id="{{item.id}}" class="kind-list-item-hd">
@@ -34,25 +81,37 @@
                 </view>
             </navigator>
         </block>
-         <view wx:if='{{agent_status==0}}' class="kind-list-item " bindtap='applyAgentModal'>
+
+        
+         <view wx:if='{{(userInfo.nickName !="") && (agent_status==0)}}' class="kind-list-item " bindtap='applyAgentModal'>
                 <view id="{{item.id}}" class="kind-list-item-hd">
                     <image src='../common/images/publishes_agent.png' class='user-index-icon'></image>
-                    <view class="kind-list-text">申请代理</view>
+                    <view class="kind-list-text">申请摄影推广人</view>
                 </view>
             </view>
-            <view wx:if='{{agent_status==1}}' class="kind-list-item ">
+            <view wx:if='{{(userInfo.nickName !="") & agent_status==1}}' class="kind-list-item ">
                 <view id="{{item.id}}" class="kind-list-item-hd">
                     <image src='../common/images/publishes_agent.png' class='user-index-icon'></image>
-                    <view class="kind-list-text">已是代理</view>
+                    <view class="kind-list-text">已是摄影推广人</view>
+                    <image wx:if='{{qrcode_url != ""}}' class="qrcode-image" src='{{qrcode_url}}' bindtap='downloadQrcode' data-url='{{qrcode_url}}'>下载二维码</image>
                 </view>
-            </view>
-            <view wx:if='{{agent_status==2}}' class="kind-list-item ">
+            </view> 
+            <navigator  wx:if='{{(userInfo.nickName !="") && agent_status==1}}' url="/pages/users/pages/agent/index?uid={{uid}}" class="navigator" >
+                <view class="kind-list-item user-navi{{index}}">
+                    <view  class="kind-list-item-hd">
+                        <image src='../common/images/publishes_agent.png' class='user-index-icon'></image>
+                        <view class="kind-list-text">推广记录</view>
+                    </view>
+                </view>
+            </navigator>
+
+            <view wx:if='{{(userInfo.nickName !="") && agent_status==2}}' class="kind-list-item ">
                 <view id="{{item.id}}" class="kind-list-item-hd">
                     <image src='../common/images/publishes_agent.png' class='user-index-icon'></image>
-                    <view class="kind-list-text">代理申请审核中</view>
+                    <view class="kind-list-text">申请审核中</view>
                 </view>
             </view>
-            <view wx:if='{{agent_status==3}}' class="kind-list-item ">
+            <view wx:if='{{(userInfo.nickName !="") && agent_status==3}}' class="kind-list-item ">
                 <view id="{{item.id}}" class="kind-list-item-hd">
                     <image src='../common/images/publishes_agent.png' class='user-index-icon'></image>
                     <view class="kind-list-text">审核已拒绝：{{reason}}</view>

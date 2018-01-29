@@ -24,14 +24,33 @@ page{
     float: right;
     height: 120rpx;
     line-height: 120rpx;
+    margin-left: 100rpx;
 }
 .user-index-icon{
     width: 43rpx;
     height: 44rpx;
 }
-.user-navi0{
+.repay-btn{
     margin-bottom:38rpx;
 }
 .user-navi2{
-    margin-bottom:70rpx;
+    margin-bottom:38rpx;
+}
+.qrcode-image{
+    width:50rpx;
+    height: 50rpx;
+}
+.contact-user{
+    padding-right: 10rpx !important;
+    padding-left: 10rpx !important;
+}
+.agent-note{
+    height: 350rpx;
+    overflow-y: scroll;
+    margin-top: 30rpx;
+}
+input{
+    border: 1px solid #ddd;
+    border-radius: 10rpx;
+    padding: 5rpx 10rpx;
 }

@@ -12,10 +12,13 @@
 </scroll-view>
 <block wx:for-items="{{collections}}" wx:key="idx" wx:for-index="idx" wx:for-item="item">
     <view class='collect-item' bindlongtap="changeFolder" data-id="{{item.collect_id}}">
-        <image src='{{item.image_path}}' mode='aspectFill'  class='item-image'></image>
+        <image src='{{item.image_path}}' data-src='{{item.image_path}}' mode='aspectFill'  class='item-image' bindtap='previewImage'></image>
         <view class='item-info'>
+        <navigator class='publish-avatar' url='/pages/users/pages/publishes/index?uid={{item.uid}}' >
             <view class='item-nickname bold big-font'>{{item.nickname}}</view>
-            <view class='item-info gray-font normal-font'>{{item.created}}</view>
+        </navigator>      
+            <view class='gray-font normal-font'>{{item.created}}</view>
+               
             <view class='cancel-collection normal-font gray-font' bindtap='cancelCollection' data-id="{{item.collect_id}}">取消收藏</view>
         </view>
     </view>    

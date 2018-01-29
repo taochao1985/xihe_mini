@@ -14,10 +14,7 @@
 }
 .publishes-like{
     float:left;
-    padding-top: 100rpx;
-}
-.publishes-like view{
-    margin-top: -5rpx;
+    padding-top: 100rpx; 
 }
 .publishes-nickname{
     float: right;
@@ -38,6 +35,8 @@
 .heart-icon{
     margin-left: 23rpx;
     margin-right: 15rpx;
+    width: 42rpx !important;
+    height: 36rpx !important;
 }
 .publish-list{
     margin-top:120rpx;
@@ -59,7 +58,7 @@
     margin-bottom: 20rpx;
 }
 .publish-comments-content{
-    margin-bottom: 40rpx;
+    margin-top: 30rpx;
 }
 .publish-images{
     max-width: 160rpx;
@@ -92,8 +91,4 @@
     width: 80rpx;
     height: 80rpx;
     margin-top: 18rpx;
-}
-.heart-icon{
-    width: 30rpx !important;
-    height: 12rpx;
 }

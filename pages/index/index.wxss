@@ -1,5 +1,6 @@
 .slide-image{
     width: 100%;
+    height: 390rpx;
 }
 swiper{
     height: 390rpx;
@@ -31,6 +32,9 @@ swiper{
 }
 .collected-most .extra-title{
     border-left-color: #ff3334; 
+}
+.followed-friends .extra-title{
+    border-left-color: #3366cc; 
 }
 .collect-list{
     margin-top: 28rpx;
@@ -130,6 +134,7 @@ swiper{
     height: 92px;
     float:left;
     margin-right: 1.62%;
+    margin-bottom: 10rpx;
 }
 .publish-three-image image{
     width:100%;
@@ -173,4 +178,24 @@ swiper{
 }
 .publish-comments-content view{
     margin:6px 0;
+}
+.show-pay-modal{
+    height: 80rpx;
+    line-height: 80rpx;
+    z-index: 1000;
+    width: 100%;
+    position: fixed;
+    bottom:0;
+    background-color: #000;
+    color: #fff;
+}
+.contact-user{
+    position: fixed;
+    bottom: 120rpx;
+    z-index: 1000;
+}
+.contact-user image{
+    width: 30rpx;
+    height: 30rpx;
+    margin-top:5rpx;
 }

@@ -1,3 +1,20 @@
+<view class="drawer_container"  wx:if="{{showModalStatus}}">
+  <!--弹窗部分-->
+  <view class="drawer_box">
+    <view class="drawer_title">{{title}}</view>
+    <view class="drawer_content normal-font">
+        <import src="../../common/lib/wxParse/wxParse.wxml"/>
+        <view class="wxParse">
+            <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
+        </view>
+    </view>
+    <view class='drawer-footer normal-font'>
+        <view class='drawer-footer-left left' bindtap='freeTrial'>返回</view>
+        <view class='left drawer-confirm' bindtap='joinClub'>加入俱乐部</view>
+    </view>
+  </view>
+</view>
+
 <view class='detail-title-top'></view>
 <view class='detail-title-time'>
     <view class='detail-title big-font bold'>

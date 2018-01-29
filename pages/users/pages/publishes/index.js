@@ -18,7 +18,9 @@ Page({
         currentPage: 0,
         totalPages: 0,
         followCount :0,
-        firstDay :""
+        firstDay :"",
+        isFollow : 0,
+        resource:""
     },
 
     /**
@@ -49,7 +51,6 @@ Page({
         xihe._set_publish_data = function (item, data) {
             var publish = data.data;
             var new_publish = xihe._regroup_data(publish, item); 
-            var userinfo = wx.getStorageSync("userinfo");
             item.setData({
                 pubList: new_publish,
                 today: data.today,
@@ -77,15 +78,21 @@ Page({
                 data.cover = userinfo.avatar;
             }
             var setData = {
-                coverImage : data.cover,
-                followCount: data.follow_count
+                coverImage  : data.cover,
+                followCount : data.follow_count,
+                isFollow    : data.is_follow
+            }
+            if (item.data.currentUid != item.data.targetUid){
+                wx.setNavigationBarTitle({
+                    title: userinfo.nickName
+                })
             }
             item.setData(setData);
         };
 
         xihe._get_userinfo = function (item) {
             xihe.get({
-                url: "/api/user/show/" + item.data.targetUid,
+                url: "/api/user/show/" + item.data.targetUid + "/" + app.globalData.uid,
                 data: {},
                 callback: function (data) {
                     if (data.code == 0) {
@@ -148,7 +155,19 @@ Page({
             this.setData({
                 targetUid: option_uid
             })
+        }else{
+            wx.setNavigationBarTitle({
+                title: "我的作品"
+            })
         }
+
+        xihe._save_userfollow_complete = function(that, data){
+            that.setData({
+                isFollow : data.is_follow,
+                followCount : data.follow_count
+            })
+        };
+
         xihe._get_publish_data(this, 0);
         xihe._get_userinfo(this);
         
@@ -165,21 +184,26 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
-        
+        app.globalData.check_user();
     },
 
     /**
      * 生命周期函数--监听页面隐藏
      */
     onHide: function () {
-
+        console.log('A');
     },
 
     /**
      * 生命周期函数--监听页面卸载
      */
     onUnload: function () {
-
+        var pages = getCurrentPages();
+        if (pages[0].route == 'pages/users/pages/publishes/create'){
+            wx.switchTab({
+                url: '/pages/index/index',
+            })
+        }
     },
 
     /**
@@ -227,6 +251,27 @@ Page({
     onShareAppMessage: function () {
 
     },
+
+    userFollow: function (e) {
+        var target = e.currentTarget.dataset;
+        var target_uid = target.uid;
+        var follow = (target.follow == 1) ? 0 : 1;
+        var that = this;
+        xihe.post({
+            url: "/api/user/follow",
+            data: {
+                user_id: app.globalData.uid,
+                target_uid: target_uid,
+                follow: follow
+            },
+            callback: function (data) {
+                if (data.code == 0) {
+                    xihe._save_userfollow_complete(that, data);
+                }
+            }
+        });
+    },
+
     changeCover: function(){
         var that = this;
         if ( that.data.currentUid == that.data. targetUid ){

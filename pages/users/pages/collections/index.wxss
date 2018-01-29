@@ -30,11 +30,10 @@ page{
     height: 280rpx;
     width: 280rpx;
     float: left;
-    margin-right: 108rpx;
 }
 .item-nickname{
     font-size: 40rpx;
-    margin-top: 70rpx;
+    margin-top: 10rpx;
     margin-bottom: 40rpx;
 }
 .selected-filter{
@@ -48,4 +47,8 @@ page{
 }
 .cancel-collection{
     margin-top: 40rpx;
+}
+.item-info{
+    float: right;
+    width: 45%;
 }
