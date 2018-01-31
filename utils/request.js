@@ -52,7 +52,6 @@ function check_user(){
                 }
             },
             fail: res => {
-                console.log('b');
                 wx.showModal({
                     title: '操作提示',
                     showCancel: false,

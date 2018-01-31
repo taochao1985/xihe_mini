@@ -19,7 +19,9 @@ Page({
    */
   onLoad: function (options) { 
     xihe._set_lession_data = function(item, data){
-        
+        if ( !data.video_image ){
+            data.video_image = data.image_path;
+        }
         item.setData({
             lessionData : data
         });

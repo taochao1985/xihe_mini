@@ -108,15 +108,13 @@ function html2json(html, bindName) {
                 node.attr = attrs.reduce(function (pre, attr) {
                     var name = attr.name;
                     var value = attr.value;
-                    if (name == 'class') {
-                        console.dir(value);
+                    if (name == 'class') { 
                         //  value = value.join("")
                         node.classStr = value;
                     }
                     // has multi attibutes
                     // make it array of attribute
-                    if (name == 'style') {
-                        console.dir(value);
+                    if (name == 'style') { 
                         //  value = value.join("")
                         node.styleStr = value;
                     }

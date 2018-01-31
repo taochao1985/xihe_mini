@@ -28,7 +28,7 @@
     </view>
 </view>
 <view class="section-video section tc" wx:if="{{lessionData.video_name}}">
-  <video src="{{webUrl}}{{lessionData.video_path}}" class='lession-video' controls ></video>
+  <video src="{{webUrl}}{{lessionData.video_path}}" class='lession-video' controls poster="{{lessionData.video_image}}"></video>
 </view>
 
 <view wx:if="{{lessionData.audio_name}}" class='section-video'>

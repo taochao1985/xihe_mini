@@ -25,7 +25,11 @@ Page({
         showModalStatus : false,
         title:"",
         description:'',
-        showPayBtn:0
+        showPayBtn:0,
+        collect_pages:0,
+        follow_pages:0,
+        collect_current_page:1,
+        follow_current_page:1
     },
     onLoad: function () {
         wx.showLoading({
@@ -56,7 +60,11 @@ Page({
                 totalPages: data.total_pages,
                 uid: app.globalData.uid,
                 title:data.title,
-                showPayBtn:parseInt(data.pay_status)
+                showPayBtn:parseInt(data.pay_status),
+                collect_pages: data.collect_pages,
+                follow_pages:data.follow_pages,
+                collect_current_page: 1,
+                follow_current_page: 1
             })
             wx.hideLoading();
 
@@ -72,84 +80,7 @@ Page({
                 }
             });
         }; 
-        if (app.globalData.uid == 0 ){
-            xihe._getUserInfo = function () {
-                var App = getApp();
-                wx.getUserInfo({
-                    success: res => {
-                        // 可以将 res 发送给后台解码出 unionId  
-                        if (App.globalData.openid && !App.globalData.userinfo) {
-                            var submitData = {
-                                openid: App.globalData.openid,
-                                userinfo: res.rawData,
-                                encrypteddata: res.encryptedData
-                            };
-                            xihe.post({
-                                url: "/api/wechat/update_userinfo",
-                                data: submitData,
-                                callback: function (data) {
-                                    App.globalData.userinfo = JSON.parse(data.data.userinfo);
-                                }
-                            });
-                        } else {
-                            console.log('did not have openid');
-                            // console.log(res);
-                            // xihe._login();
-                        }
-
-                        // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-                        // 所以此处加入 callback 以防止这种情况
-                        var app = getApp();
-                        if (app.userInfoReadyCallback) {
-                            app.userInfoReadyCallback(res)
-                        }
-                    },
-                    fail: res => {
-                        console.log(res);
-                    }
-                })
-            };
-
-            xihe._getSetting = function () {
-                if (wx.getSetting){
-                    // 获取用户信息
-                    wx.getSetting({
-                        success: res => {
-                            if (!res.authSetting['scope.userInfo']) {
-                                xihe._getUserInfo();
-                            } else {
-                                // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框 
-                                xihe._getUserInfo();
-                            }
-                        },
-                        fail: res => {
-                            console.log(res);
-                        }
-                    })
-                }else{
-                    wx.showModal({
-                        title: '提示',
-                        content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
-                    })
-                }
-            };
-
-            // 登录
-            xihe._get_openid_callback = function (data) { 
-                app.globalData.openid     = data.openid;
-                app.globalData.uid        = data.uid;   
-                app.globalData.agent_id   = data.agent_id;
-                app.globalData.free_trial = data.free_trial;
-                app.globalData.pay_status = data.pay_status;
-                xihe._getSetting();
-                xihe._get_index_data();
-            };
-
-        }else{ 
-            xihe._get_index_data();
-        }
-
-         
+    
         xihe._save_comment_complete = function(item, data, post_id){
             item.data.publishes[post_id].comments = data.data;
             item.setData({
@@ -189,6 +120,24 @@ Page({
             that.setData({
                 currentPage : ++page,
                 publishes: publishes
+            });
+        };
+
+        xihe._set_more_collect = function (that, data, page, urls) {
+            var collects = that.data.collects.concat(data);
+            var urls = that.data.totalImageUrls + ";" + urls;
+            that.setData({
+                collect_current_page: ++page,
+                collects: collects,
+                totalImageUrls : urls
+            });
+        };
+
+        xihe._set_more_follows = function (that, data, page) {
+            var follows = that.data.follows.concat(data);
+            that.setData({
+                follow_current_page: ++page,
+                follows: follows
             });
         };
 
@@ -271,10 +220,88 @@ Page({
                 }
             });
         };
+
+        if (app.globalData.uid == 0) {
+            xihe._getUserInfo = function () {
+                var App = getApp();
+                wx.getUserInfo({
+                    success: res => {
+                        // 可以将 res 发送给后台解码出 unionId  
+                        if (App.globalData.openid && !App.globalData.userinfo) {
+                            var submitData = {
+                                openid: App.globalData.openid,
+                                userinfo: res.rawData,
+                                encrypteddata: res.encryptedData
+                            };
+                            xihe.post({
+                                url: "/api/wechat/update_userinfo",
+                                data: submitData,
+                                callback: function (data) {
+                                    App.globalData.userinfo = JSON.parse(data.data.userinfo);
+                                }
+                            });
+                        } else {
+                            console.log('did not have openid');
+                            // console.log(res);
+                            // xihe._login();
+                        }
+
+                        // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
+                        // 所以此处加入 callback 以防止这种情况
+                        var app = getApp();
+                        if (app.userInfoReadyCallback) {
+                            app.userInfoReadyCallback(res)
+                        }
+                    },
+                    fail: res => {
+                        console.log(res);
+                    }
+                })
+            };
+
+            xihe._getSetting = function () {
+                if (wx.getSetting) {
+                    // 获取用户信息
+                    wx.getSetting({
+                        success: res => {
+                            if (!res.authSetting['scope.userInfo']) {
+                                xihe._getUserInfo();
+                            } else {
+                                // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框 
+                                xihe._getUserInfo();
+                            }
+                        },
+                        fail: res => {
+                            console.log(res);
+                        }
+                    })
+                } else {
+                    wx.showModal({
+                        title: '提示',
+                        content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
+                    })
+                }
+            };
+
+            // 登录
+            xihe._get_openid_callback = function (data) {
+                app.globalData.openid = data.openid;
+                app.globalData.uid = data.uid;
+                app.globalData.agent_id = data.agent_id;
+                app.globalData.free_trial = data.free_trial;
+                app.globalData.pay_status = data.pay_status;
+                xihe._getSetting();
+                xihe._get_index_data();
+            };
+
+        } else {
+            xihe._get_index_data();
+        }
     },
 
     onShow: function(){
         app.globalData.check_user();
+        
     },
     joinClub: function(e){
         xihe._create_wechat_pay(this);
@@ -285,17 +312,17 @@ Page({
             showPayBtn:1
         })
     },
-    // replayComment: function(e){
-    //     var target = e.currentTarget.dataset;
-    //     var post_id = target.postId;
-    //     var comment_id = target.id;
-    //     var nickname = target.nickname;
+    replayComment: function(e){
+        // var target = e.currentTarget.dataset;
+        // var post_id = target.postId;
+        // var comment_id = target.id;
+        // var nickname = target.nickname;
 
-    //     var target_input = '#comment_input_'+post_id;
-    //     var target_item = wx.createSelectorQuery().select(target_input).boundingClientRect(function (rect) {
-    //         console.log(rect)
-    //     }).exec();
-    // },
+        // var target_input = '#comment_input_'+post_id;
+        // var target_item = wx.createSelectorQuery().select(target_input).boundingClientRect(function (rect) {
+        //     console.log(rect)
+        // }).exec();
+    },
 
     freeTrial: function(e){
         var that = this;
@@ -334,7 +361,7 @@ Page({
         var that            = this;
         xihe.post({
             url: "/api/publish/store_comment",
-            data: { 
+            data: {
                     uid: app.globalData.uid,
                     post_id : post_id,
                     content : comment_content
@@ -425,6 +452,46 @@ Page({
                             xihe._exec_actionsheet(data.data, that);
                         }else{
                             xihe._save_user_collect(-1, that);
+                        }
+                    }
+                }
+            });
+        }
+    },
+
+    followSlideRight: function (e) {
+        var that = this;
+        if (that.data.follow_current_page < that.data.follow_pages) {
+            xihe.get({
+                url: "/api/main/get_more_follows",
+                data: {
+                    uid: app.globalData.uid,
+                    page: that.data.follow_current_page
+                },
+                callback: function (data) {
+                    if (data.code == 0) {
+                        if (data.data.length > 0) {
+                            xihe._set_more_follows(that, data.data, data.page);
+                        }
+                    }
+                }
+            });
+        }
+    },
+
+    collectSlideRight: function(e){
+        var that = this;
+        if (that.data.collect_current_page < that.data.collect_pages ){
+            xihe.get({
+                url: "/api/main/get_more_collects",
+                data: {
+                    uid  : app.globalData.uid,
+                    page : that.data.collect_current_page 
+                },
+                callback: function (data) {
+                    if (data.code == 0) {
+                        if (data.data.collections.length > 0) {
+                            xihe._set_more_collect(that, data.data.collections, data.page, data.data.urls);
                         }
                     }
                 }

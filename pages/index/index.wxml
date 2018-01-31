@@ -43,7 +43,7 @@
     <view class="extra-title normal-font bold">
         会员收藏最多
     </view> 
-        <scroll-view class="scroll-view_H collect-list" scroll-x style="width: 100%">
+        <scroll-view class="scroll-view_H collect-list" scroll-x style="width: 100%" bindscrolltolower="collectSlideRight">
         <block wx:for-items="{{collects}}" wx:key="{{item.id}}" wx:for-index="idx">
             <view class='collect-item'>
                 <image mode='aspectFill' class="item-image" src='{{item.image_path}}' data-images='{{totalImageUrls}}' data-src='{{item.image_path_origin}}' bindtap='previewImage' lazy-load='true'></image>
@@ -79,7 +79,7 @@
     <view class="extra-title normal-font bold">
         人气作者
     </view>
-    <scroll-view class="scroll-view_H collect-list" scroll-x style="width: 100%">
+    <scroll-view class="scroll-view_H collect-list" scroll-x style="width: 100%" bindscrolltolower="followSlideRight">
         <block wx:for-items="{{follows}}" wx:key="{{item.id}}" wx:for-index="idx">
             <navigator class='collect-item' url='/pages/users/pages/publishes/index?uid={{item.target_uid}}'>
                 <image mode='aspectFill' class="item-image" src='{{item.avatarurl}}' lazy-load='true'></image>
@@ -171,8 +171,8 @@
                                             data-aid='{{image.aid}}'>
                                     </image>
 
-                                    <image wx:if='{{(index+1)%2 == 0}}' data-images='{{item.image_urls}}' data-src='item.image_path2[ind]' bindtap='previewImage' mode='aspectFill' class='no-margin' src='{{image.url}}' lazy-load='true'></image>
-                                    <image wx:else mode='aspectFill' data-images='{{item.image_urls}}' data-src='{{image.url}}' bindtap='previewImage' src='{{image.url}}' lazy-load='true'></image>
+                                    <image wx:if='{{(index+1)%2 == 0}}' data-images='{{item.image_urls}}' data-src='{{item.image_path2[ind]}}' bindtap='previewImage' mode='aspectFill' class='no-margin' src='{{image.url}}' lazy-load='true'></image>
+                                    <image wx:else mode='aspectFill' data-images='{{item.image_urls}}' data-src='{{item.image_path2[ind]}}' bindtap='previewImage' src='{{image.url}}' lazy-load='true'></image>
                                 </view>
                             </block>
                             <view class='clearfix'></view>
@@ -202,8 +202,8 @@
                                             data-aid='{{image.aid}}'>
                                     </image>
 
-                                    <image wx:if='{{(index+1)%3 == 0}}' data-images='{{item.image_urls}}' data-src='item.image_path2[ind]' bindtap='previewImage' mode='aspectFill' class='no-margin' src='{{image.url}}' lazy-load='true'></image>
-                                    <image wx:else mode='aspectFill' data-src='{{image.url}}' data-images='{{item.image_urls}}' bindtap='previewImage' src='{{image.url}}' lazy-load='true'></image>
+                                    <image wx:if='{{(index+1)%3 == 0}}' data-images='{{item.image_urls}}' data-src='{{item.image_path2[ind]}}' bindtap='previewImage' mode='aspectFill' class='no-margin' src='{{image.url}}' lazy-load='true'></image>
+                                    <image wx:else mode='aspectFill' data-src='{{item.image_path2[ind]}}' data-images='{{item.image_urls}}' bindtap='previewImage' src='{{image.url}}' lazy-load='true'></image>
                                 </view>
                             </block>
                             <view class='clearfix'></view>
