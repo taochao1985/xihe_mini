@@ -29,7 +29,8 @@ Page({
         collect_pages:0,
         follow_pages:0,
         collect_current_page:1,
-        follow_current_page:1
+        follow_current_page:1,
+        lastest_pub_time : 0
     },
     onLoad: function () {
         wx.showLoading({
@@ -64,7 +65,8 @@ Page({
                 collect_pages: data.collect_pages,
                 follow_pages:data.follow_pages,
                 collect_current_page: 1,
-                follow_current_page: 1
+                follow_current_page: 1,
+                lastest_pub_time: data.lastest_pub_time
             })
             wx.hideLoading();
 
@@ -80,6 +82,28 @@ Page({
                 }
             });
         }; 
+
+        xihe._set_lastest_data = function(that, data){
+            if (data.code == 0 ){
+                var publishes = data.publishes.concat(that.data.publishes);
+                that.setData({
+                    lastest_pub_time: data.lastest_pub_time,
+                    publishes: publishes
+                });
+            }
+        };
+
+        xihe._get_lastest_publishes = function(that){
+            if ( that.data.lastest_pub_time > 0 ){
+                xihe.get({
+                    url: "/api/main/get_new_publishes",
+                    data: { uid: app.globalData.uid, limit_time: that.data.lastest_pub_time },
+                    callback: function (data) {
+                        xihe._set_lastest_data(that, data);
+                    }
+                });
+            }
+        };
     
         xihe._save_comment_complete = function(item, data, post_id){
             item.data.publishes[post_id].comments = data.data;
@@ -301,7 +325,7 @@ Page({
 
     onShow: function(){
         app.globalData.check_user();
-        
+        xihe._get_lastest_publishes(this);
     },
     joinClub: function(e){
         xihe._create_wechat_pay(this);
@@ -498,4 +522,5 @@ Page({
             });
         }
     }
+    
 })
