@@ -117,6 +117,14 @@
                     <view class="kind-list-text">审核已拒绝：{{reason}}</view>
                 </view>
             </view>
+            <navigator url="pages/profile/index" class="navigator" >
+                <view  class="kind-list-item">
+                    <view  class="kind-list-item-hd">
+                        <image src='../common/images/profile_highlight.png' class='user-index-icon'></image>
+                        <view class="kind-list-text">完善个人信息</view>
+                    </view>
+                </view>    
+            </navigator>
             <navigator url="pages/news/detail?id=1&uid={{uid}}" class="navigator" >
                 <view  class="kind-list-item user-navi{{index}}">
                     <view  class="kind-list-item-hd">

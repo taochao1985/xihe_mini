@@ -14,8 +14,8 @@
     text-indent: 10rpx;
 }
 .image-close{
-    width: 25rpx;
-    height: 25rpx;
+    width: 40rpx;
+    height: 40rpx;
     position: absolute;
     margin-top: -27rpx;
     margin-left: 132rpx;

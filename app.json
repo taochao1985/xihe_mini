@@ -9,6 +9,7 @@
     "pages/lessions/pages/index",
     "pages/lessions/pages/detail",
     "pages/users/pages/news/index",
+    "pages/users/pages/profile/index",
     "pages/users/pages/agent/index",
     "pages/users/pages/news/detail",
     "pages/users/pages/publishes/create"

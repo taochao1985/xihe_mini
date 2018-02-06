@@ -6,15 +6,18 @@ Page({
         countLimit:9,
         description:"",
         uploadUrls:"",
-        stepNum:0
+        stepNum:0,
+        submiting:0,
+        tempImageArray: {}
     },
     onLoad: function (options) {
         
-        xihe._upload_complete = function (res, that){
+        xihe._upload_complete = function (res, that, sort){
             res = JSON.parse(res);
             if (res.errno == 0){
                 var img_data = res.data;
                 var temp_uploadUrls = that.data.uploadUrls + img_data.final_path + img_data.file_name + ";";
+                that.data.tempImageArray[sort] = img_data.final_path + img_data.file_name;
                 that.setData({
                     uploadUrls: temp_uploadUrls
                 })
@@ -25,7 +28,9 @@ Page({
             
             wx.hideToast();
             that.setData({
-                stepNum : 0
+                stepNum : 0,
+                uploadUrls : "",
+                submiting: 0
             });
             if( res.code == 0 ){
                 that.setData({
@@ -62,19 +67,13 @@ Page({
         };
 
         xihe._save_form = function(e, that){
-            wx.showToast({
-                title: "上传中",
-                icon: "loading",
-                duration: 10000
-            });
             var submit_data = {
                 description : e.detail.value.description,
-                image_path  : that.data.uploadUrls,
+                image_path  : JSON.stringify(that.data.tempImageArray),
                 user_id     : app.globalData.uid
             };
-
             xihe.post({
-                url : "/api/publish/store",
+                url : "/api/publish/store_object",
                 data : submit_data,
                 callback : function(data){
                     xihe._save_form_complete(data, that);
@@ -84,12 +83,14 @@ Page({
 
         xihe._getImage = function (opt) {
             var tempFilePaths = opt.target.data.imageList; 
+            tempFilePaths = tempFilePaths.reverse();
             for (var i = 0; i < tempFilePaths.length; i++) {
-                (function (image_path, opt){ 
+                (function (image_path, opt, i){ 
+                    console.log(image_path);
                     xihe.upload_image({
                         image_path: image_path,
                         callback: function(res) {
-                            xihe._upload_complete(res,opt.target);
+                            xihe._upload_complete(res, opt.target, i);
                             opt.target.data.stepNum++;
                             opt.target.setData({
                                 stepNum: opt.target.data.stepNum
@@ -99,7 +100,7 @@ Page({
                             }
                         }
                     });
-                })(tempFilePaths[i], opt)
+                })(tempFilePaths[i], opt, i)
             }
         }
     },
@@ -115,7 +116,8 @@ Page({
         }
         this.setData({
             stepNum : 0,
-            uploadUrls : ""
+            uploadUrls : "",
+            submiting: 0            
         });
     },
     removeImg: function(e){
@@ -136,7 +138,7 @@ Page({
             count: this.data.countLimit-this.data.imageList.length,
             success: function (res) {
                 if( that.data.imageList.length < 9 ){
-                    that.data.imageList = res.tempFilePaths.concat(that.data.imageList);
+                    that.data.imageList = that.data.imageList.concat(res.tempFilePaths);
                     that.setData({
                         imageList: that.data.imageList
                     })
@@ -154,11 +156,22 @@ Page({
     },
 
     formSubmit: function(e){
-        
-        xihe._getImage({
-            target : this,
-            form_item : e,
-            callback : xihe._save_form
-        });
+        if (this.data.submiting == 0) {
+            wx.showToast({
+                title: "上传中",
+                icon: "loading",
+                duration: 100000
+            });
+            this.setData({
+                submiting : 1,
+                stepNum: 0,
+                uploadUrls: ""
+            });
+            xihe._getImage({
+                target : this,
+                form_item : e,
+                callback : xihe._save_form
+            });
+        }
     }
 })

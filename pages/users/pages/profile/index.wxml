@@ -1,0 +1,72 @@
+<view class="container">
+  <view class="page-body">
+    <form catchsubmit="formSubmit" catchreset="formReset">
+
+        <view class="page-section">
+            <view class="page-section-title">姓名</view>
+            <view class="weui-cells weui-cells_after-title">
+                <view class="weui-cell weui-cell_input">
+                    <input class="weui-input" name="real_name" placeholder="请输入您的姓名" value="{{userinfo.real_name}}" />
+                </view>
+            </view>
+        </view>
+
+        <view class="page-section page-section-gap">
+            <view class="page-section-title">性别</view>
+            <radio-group name="sex">
+                <label><radio value="1" checked='{{userinfo.sex == 1}}' />男</label>
+                <label><radio value="2" checked='{{userinfo.sex == 2}}' />女</label>
+            </radio-group>
+        </view>
+
+        <view class="page-section">
+            <view class="page-section-title">微信号</view>
+            <view class="weui-cells weui-cells_after-title">
+                <view class="weui-cell weui-cell_input">
+                    <input class="weui-input" name="wechat_num" placeholder="请输入您的微信号" value='{{userinfo.wechat_num}}'/>
+                </view>
+            </view>
+        </view>
+
+        <view class="page-section">
+            <view class="page-section-title">省份</view>
+            <view class="weui-cells weui-cells_after-title">
+                <view class="weui-cell weui-cell_input">
+                    <input class="weui-input" name="province" placeholder="请输入您的所属省份"  value="{{userinfo.province}}" />
+                </view>
+            </view>
+        </view>
+
+        <view class="page-section">
+            <view class="page-section-title">详细地址</view>
+            <view class="weui-cells weui-cells_after-title">
+                <view class="weui-cell weui-cell_input">
+                    <input class="weui-input" name="address" placeholder="请输入您的详细地址"  value="{{userinfo.address}}" />
+                </view>
+            </view>
+        </view>
+
+        <view class="page-section">
+            <view class="page-section-title">摄影设备</view>
+            <view class="weui-cells weui-cells_after-title">
+                <view class="weui-cell weui-cell_input">
+                    <input class="weui-input" name="device" placeholder="请输入您的摄影设备"  value="{{userinfo.device}}" />
+                </view>
+            </view>
+        </view>
+
+        <view class="page-section">
+            <view class="page-section-title">曾获奖项</view>
+            <view class="weui-cells weui-cells_after-title">
+                <view class="weui-cell weui-cell_input">
+                    <textarea placeholder="请输入您的曾获奖项" name="metals" value="{{userinfo.metals}}" />
+                </view>
+            </view>
+        </view>
+
+      <view class="btn-area">
+        <button type="primary" formType="submit">立即提交</button>
+      </view>
+    </form>
+  </view>
+</view>

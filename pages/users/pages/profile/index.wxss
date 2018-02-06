@@ -1,0 +1,59 @@
+@import "../../../common/lib/weui.wxss";
+
+label {
+  display: inline-block;
+  min-width: 270rpx;
+  margin-right: 20rpx;
+}
+form{
+  width: 100%;
+}
+.picker-text {
+  margin-left: 20rpx;
+  position: relative;
+}
+/* widget */
+.btn-area{
+  margin-top: 60rpx;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 30rpx;
+}
+.page-section{
+  width: 100%;
+  margin-bottom: 20rpx;
+}
+.page-section_center{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.page-section:last-child{
+  margin-bottom: 0;
+}
+.page-section-gap{
+  box-sizing: border-box;
+  padding: 0 30rpx;
+}
+.page-section-spacing{
+  box-sizing: border-box;
+  padding: 0 80rpx;
+}
+.page-section-title{
+  font-size: 28rpx;
+  color: #999999;
+  margin-bottom: 10rpx;
+  padding-left: 30rpx;
+  padding-right: 30rpx;
+}
+.page-section-gap .page-section-title{
+  padding-left: 0;
+  padding-right: 0;
+}
+.input-placeholder,.textarea-placeholder{
+    font-size: 14px;
+}
+textarea{
+    padding-top: 20rpx;
+    height: 100rpx;
+}

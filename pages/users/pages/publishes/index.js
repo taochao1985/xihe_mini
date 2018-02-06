@@ -191,7 +191,7 @@ Page({
      * 生命周期函数--监听页面隐藏
      */
     onHide: function () {
-        console.log('A');
+        //console.log('A');
     },
 
     /**

@@ -54,6 +54,7 @@ Page({
             item.setData({
                 followTime   : data.count,
                 agent_status : data.agent_status,
+                pay_status   : data.pay_status,
                 reason       : data.reason,
                 apply_title  : data.apply_title,
                 qrcode_url   : data.agent_qrcode,
